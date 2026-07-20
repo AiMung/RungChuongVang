@@ -515,7 +515,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
     <script src="firebase-config.js"></script>
     <script src="clusters-data.js"></script>
-    <script src="questions-data.js"></script>
     <script>
         'use strict';
 
@@ -636,7 +635,7 @@
             const phaseKey = g.phase + ':' + g.currentQuestionIndex;
             const isNew = phaseKey !== lastQPhaseKey;
 
-            const q = QUESTIONS[g.currentQuestionIndex];
+            const q = g.currentQuestion || null;
             if (!q) return;
 
             if (isNew) {
@@ -686,7 +685,7 @@
             clearInterval(countdownTimer); countdownTimer = null;
             lastQPhaseKey = null;
 
-            const q = QUESTIONS[g.currentQuestionIndex];
+            const q = g.currentQuestion || null;
             if (q) {
                 el('qText').textContent = q.text;
                 el('optA').textContent = 'A.  ' + q.options.A;

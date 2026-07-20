@@ -421,7 +421,6 @@
 </div>
 
 <script src="clusters-data.js"></script>
-<script src="questions-data.js"></script>
 <script src="units-data.js"></script>
 <script src="firebase-config.js"></script>
 <script>
@@ -440,7 +439,6 @@ for (let i = 0; i < 55; i++) {
 // ===== Dynamic stats from real data files =====
 try { if (window.TOTAL_SEATS) document.getElementById('statSeats').textContent = window.TOTAL_SEATS; } catch (e) {}
 try { if (window.UNITS_DATA) document.getElementById('statClusters').textContent = window.UNITS_DATA.length; } catch (e) {}
-try { if (window.QUESTIONS) document.getElementById('statQuestions').textContent = window.QUESTIONS.length; } catch (e) {}
 
 // ===== Live joined-players counter (Firebase) =====
 (function liveCounter() {

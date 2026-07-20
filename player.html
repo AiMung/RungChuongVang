@@ -710,7 +710,6 @@
     </div>
 
     <script src="clusters-data.js"></script>
-    <script src="questions-data.js"></script>
     <script src="units-data.js"></script>
     <script src="firebase-config.js"></script>
     <script>
@@ -1025,8 +1024,14 @@
                 showPhase('phaseQuestion');
                 $('timerWrap').style.display = 'none';
                 $('answerGrid').style.display = 'none';
-                const q = QUESTIONS[game.currentQuestionIndex];
+                const q = game.currentQuestion || null;
                 $('pQuestionText').textContent = q ? q.text : '';
+                if (q) {
+                    $('pOptA').textContent = q.options.A;
+                    $('pOptB').textContent = q.options.B;
+                    $('pOptC').textContent = q.options.C;
+                    $('pOptD').textContent = q.options.D;
+                }
                 $('answeredNote').textContent = 'Chuẩn bị trả lời...';
                 $('answeredNote').className = 'answered-note';
 
@@ -1039,7 +1044,7 @@
                 showPhase('phaseQuestion');
                 $('timerWrap').style.display = 'block';
                 $('answerGrid').style.display = 'grid';
-                const q = QUESTIONS[game.currentQuestionIndex];
+                const q = game.currentQuestion || null;
                 $('pQuestionText').textContent = q ? q.text : '';
                 if (q) {
                     $('pOptA').textContent = q.options.A;
@@ -1066,7 +1071,7 @@
             } else if (game.phase === 'reveal' || game.phase === 'result') {
                 clearTimers();
                 showPhase('phaseReveal');
-                const q = QUESTIONS[game.currentQuestionIndex];
+                const q = game.currentQuestion || null;
                 const wasElimBefore = myPlayer && myPlayer.eliminatedAtQuestion !== null
                     && myPlayer.eliminatedAtQuestion !== undefined
                     && myPlayer.eliminatedAtQuestion <= game.currentQuestionIndex;
