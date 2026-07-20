@@ -1080,7 +1080,9 @@
                     $('revealIcon').textContent = '✅';
                     $('revealTitle').textContent = 'Chính xác! Tiếp tục nào!';
                 }
-                $('revealText').textContent = 'Đáp án đúng: ' + (q ? q.options[q.correct] : '—');
+                const correctChoice = game.correctChoice;
+                $('revealText').textContent = 'Đáp án đúng: ' +
+                    (q && correctChoice ? q.options[correctChoice] : '—');
 
             } else if (game.phase === 'finished') {
                 clearTimers();

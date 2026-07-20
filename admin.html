@@ -503,7 +503,11 @@
                 const q = QUESTIONS[idx];
                 el('qIndexLabel').textContent = 'Câu ' + (idx + 1) + ' / ' + QUESTIONS.length;
                 el('qTextAdmin').textContent = q ? q.text : '(hết câu hỏi)';
-                if (q) el('qCorrectAdmin').textContent = 'Đáp án đúng: ' + q.correct + '. ' + q.options[q.correct];
+                if (q && latestGame.correctChoice) {
+                    el('qCorrectAdmin').textContent = 'Đáp án đúng: ' + latestGame.correctChoice + '. ' + q.options[latestGame.correctChoice];
+                } else if (q) {
+                    el('qCorrectAdmin').textContent = 'Đáp án đang được ẩn bằng SHA-512 + salt.';
+                }
             }
             el('btnShow').disabled  = (latestGame.phase === 'read_question' || latestGame.phase === 'question');
             el('btnNext').disabled  = (latestGame.phase !== 'read_question');
@@ -531,7 +535,12 @@
                 idx = (idx === undefined || idx < 0) ? 0 : idx + 1;
             }
             if (idx >= QUESTIONS.length) { alert('Đã hết câu hỏi trong ngân hàng.'); return; }
-            db.ref('game').update({ phase: 'read_question', currentQuestionIndex: idx });
+            db.ref('game').update({
+                phase: 'read_question',
+                currentQuestionIndex: idx,
+                correctChoice: null,
+                correctAnswerText: null
+            });
         }
 
         function startAnswering() {
@@ -544,17 +553,22 @@
             });
         }
 
-        function scoreQuestion() {
+        async function scoreQuestion() {
             const idx = latestGame.currentQuestionIndex;
             const q = QUESTIONS[idx];
             if (!q) return;
+            const correctChoice = await getCorrectChoice(idx);
+            if (!correctChoice) {
+                alert('Không tìm được hash đáp án cho câu này.');
+                return;
+            }
             const updates = {};
             let aliveAfter = [];
             Object.keys(latestTeams).forEach(code => {
                 const t = latestTeams[code];
                 if (t.status !== 'alive') return;
                 const ans = t.answers && t.answers[idx];
-                const isCorrect = ans && ans.choice === q.correct;
+                const isCorrect = ans && ans.choice === correctChoice;
                 if (isCorrect) {
                     updates['teams/' + code + '/answers/' + idx + '/correct'] = true;
                     aliveAfter.push(code);
@@ -567,11 +581,41 @@
             db.ref().update(updates).then(() => {
                 if (aliveAfter.length === 1 && idx >= 14) {
                     db.ref('teams/' + aliveAfter[0] + '/status').set('winner');
-                    db.ref('game').update({ phase: 'finished', winnerCode: aliveAfter[0] });
+                    db.ref('game').update({
+                        phase: 'finished',
+                        winnerCode: aliveAfter[0],
+                        correctChoice: correctChoice,
+                        correctAnswerText: q.options[correctChoice]
+                    });
                 } else {
-                    db.ref('game').update({ phase: 'result' });
+                    db.ref('game').update({
+                        phase: 'result',
+                        correctChoice: correctChoice,
+                        correctAnswerText: q.options[correctChoice]
+                    });
                 }
             });
+        }
+
+        async function getCorrectChoice(questionIndex) {
+            const q = QUESTIONS[questionIndex];
+            const targetHash = q && q.correct;
+            if (!targetHash) return null;
+            const choices = ['A', 'B', 'C', 'D'];
+            for (const choice of choices) {
+                const hash = await hashAnswer(questionIndex, choice);
+                if (hash === targetHash) return choice;
+            }
+            return null;
+        }
+
+        async function hashAnswer(questionIndex, choice) {
+            const payload = `${ANSWER_HASH_SALT}:${questionIndex}:${choice}`;
+            const bytes = new TextEncoder().encode(payload);
+            const digest = await crypto.subtle.digest(ANSWER_HASH_ALGORITHM, bytes);
+            return Array.from(new Uint8Array(digest))
+                .map(byte => byte.toString(16).padStart(2, '0'))
+                .join('');
         }
 
         function reviveAll() {

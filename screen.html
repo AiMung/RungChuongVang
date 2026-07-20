@@ -694,7 +694,7 @@
                 el('optC').textContent = 'C.  ' + q.options.C;
                 el('optD').textContent = 'D.  ' + q.options.D;
                 ['A','B','C','D'].forEach(k => el('opt'+k).classList.remove('reveal-correct'));
-                el('opt' + q.correct).classList.add('reveal-correct');
+                if (g.correctChoice) el('opt' + g.correctChoice).classList.add('reveal-correct');
                 el('bigTimer').textContent = '';
                 el('bigTimer').style.fontSize = '72px';
                 el('bigTimer').classList.remove('urgent');
