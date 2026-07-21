@@ -7,33 +7,76 @@
     <title>Rung Chuông Vàng — Thí Sinh</title>
     <meta name="description" content="Trang đăng nhập dành cho thí sinh thi Rung Chuông Vàng" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&family=Fredoka:wght@600;700&display=swap"
+        rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
     <style>
         /* ==================== DESIGN TOKENS ==================== */
         :root {
-            --gold: #ffd700;
-            --gold-2: #ffb800;
-            --gold-3: #ff9d00;
-            --gold-glow: rgba(255, 215, 0, 0.45);
-            --blue: #1e90ff;
-            --blue-dark: #0a5fd4;
-            --blue-soft: rgba(30, 144, 255, 0.12);
-            --red: #e63946;
-            --red-dark: #b31038;
-            --green: #22c55e;
-            --bg: #060c18;
-            --bg-card: rgba(255, 255, 255, 0.045);
-            --border: rgba(255, 215, 0, 0.22);
-            --border-focus: rgba(255, 215, 0, 0.7);
-            --text: #f1f5f9;
-            --muted: #94a3b8;
+            --gold: #f59e0b;
+            --gold-2: #fbbf24;
+            --gold-3: #fcd34d;
+            --gold-text: #b45309;
+            --gold-glow: rgba(245, 158, 11, 0.4);
+            --blue: #2563eb;
+            --blue-dark: #1d4ed8;
+            --blue-soft: rgba(37, 99, 235, 0.12);
+            --red: #ef4444;
+            --red-dark: #b91c1c;
+            --green: #10b981;
+            --bg: #f8fafc;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --border: rgba(37, 99, 235, 0.2);
+            --border-focus: rgba(245, 158, 11, 0.8);
+            --text: #0f172a;
+            --muted: #475569;
             --font: 'Be Vietnam Pro', sans-serif;
             --font-display: 'Fredoka', sans-serif;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        /* ==================== LIGHT MODE ==================== */
+        :root.light-mode {
+            --bg: #fffdf0;
+            --bg-card: rgba(0, 0, 0, 0.04);
+            --border: rgba(180, 140, 0, 0.35);
+            --border-focus: rgba(180, 100, 0, 0.7);
+            --text: #1a1200;
+            --muted: #6b5500;
+        }
+
+        :root.light-mode body {
+            background-image:
+                radial-gradient(ellipse 100% 60% at 50% -10%, rgba(255, 215, 0, 0.22) 0%, transparent 65%),
+                radial-gradient(ellipse 70% 50% at 85% 85%, rgba(211, 47, 47, 0.10) 0%, transparent 55%);
+        }
+
+        :root.light-mode .field-input {
+            background: rgba(255, 255, 255, 0.8);
+            color: #1a1200;
+        }
+
+        :root.light-mode .combo-dropdown {
+            background: #fffcf0;
+        }
+
+        :root.light-mode .combo-option {
+            color: #1a1200;
+        }
+
+        :root.light-mode .glass-card {
+            background: rgba(255, 252, 220, 0.85);
+            border-color: rgba(180, 140, 0, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
 
         body {
             font-family: var(--font);
@@ -44,7 +87,6 @@
                 radial-gradient(ellipse 100% 60% at 50% -10%, rgba(30, 144, 255, 0.22) 0%, transparent 65%),
                 radial-gradient(ellipse 70% 50% at 85% 85%, rgba(230, 57, 70, 0.12) 0%, transparent 55%),
                 radial-gradient(ellipse 60% 40% at 15% 75%, rgba(255, 215, 0, 0.07) 0%, transparent 50%);
-           /* background-attachment: fixed;*/
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -60,6 +102,7 @@
             overflow: hidden;
             z-index: 0;
         }
+
         .star {
             position: absolute;
             border-radius: 50%;
@@ -67,9 +110,19 @@
             animation: twinkle var(--dur, 3s) ease-in-out infinite;
             animation-delay: var(--delay, 0s);
         }
+
         @keyframes twinkle {
-            0%, 100% { opacity: 0.08; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.4); }
+
+            0%,
+            100% {
+                opacity: 0.08;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.6;
+                transform: scale(1.4);
+            }
         }
 
         /* ==================== LAYOUT ==================== */
@@ -79,34 +132,57 @@
             width: 100%;
             max-width: 430px;
         }
-        .d-none { display: none !important; }
+
+        .d-none {
+            display: none !important;
+        }
 
         /* ==================== HEADER ==================== */
         .app-header {
             text-align: center;
             margin-bottom: 22px;
             padding-top: 8px;
+            position: relative;
         }
-        .bell-icon {
-            font-size: 54px;
-            display: block;
-            filter: drop-shadow(0 0 18px var(--gold-glow));
-            animation: bellRing 4s ease-in-out infinite;
-            transform-origin: top center;
+
+        /* Theme toggle in header */
+        .theme-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 6px 9px;
+            font-size: 16px;
+            cursor: pointer;
+            color: var(--text);
+            transition: border-color 0.2s;
         }
-        @keyframes bellRing {
-            0%, 60%, 100% { transform: rotate(0deg); }
-            65% { transform: rotate(-10deg); }
-            70% { transform: rotate(10deg); }
-            75% { transform: rotate(-7deg); }
-            80% { transform: rotate(7deg); }
-            85% { transform: rotate(-4deg); }
-            90% { transform: rotate(4deg); }
-            95% { transform: rotate(0deg); }
+
+        .theme-btn:hover {
+            border-color: var(--gold);
         }
+
+        .logo-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 4px;
+        }
+
+        .logo-img {
+            height: 52px;
+            width: 52px;
+            object-fit: contain;
+            border-radius: 10px;
+            filter: drop-shadow(0 2px 8px rgba(255, 215, 0, 0.45));
+        }
+
         .app-title {
             font-family: var(--font-display);
-            font-size: 30px;
+            font-size: 26px;
             font-weight: 700;
             background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold) 40%, var(--gold-3) 100%);
             background-size: 200% auto;
@@ -115,18 +191,25 @@
             background-clip: text;
             animation: shimmer 3s linear infinite;
             letter-spacing: 1px;
-            margin-top: 10px;
+            margin-top: 4px;
             text-transform: uppercase;
         }
+
         @keyframes shimmer {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
+            0% {
+                background-position: 0% center;
+            }
+
+            100% {
+                background-position: 200% center;
+            }
         }
+
         .app-subtitle {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--muted);
-            margin-top: 4px;
-            font-weight: 500;
+            margin-top: 2px;
+            font-weight: 600;
         }
 
         /* ==================== CARD ==================== */
@@ -140,9 +223,17 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 215, 0, 0.04) inset;
             animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
+
         @keyframes popIn {
-            from { opacity: 0; transform: scale(0.93) translateY(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+            from {
+                opacity: 0;
+                transform: scale(0.93) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
 
         .card-title {
@@ -151,6 +242,7 @@
             color: var(--gold);
             margin-bottom: 4px;
         }
+
         .card-desc {
             font-size: 13px;
             color: var(--muted);
@@ -159,7 +251,10 @@
         }
 
         /* ==================== FORM ==================== */
-        .field { margin-bottom: 15px; }
+        .field {
+            margin-bottom: 15px;
+        }
+
         .field-label {
             display: block;
             font-size: 10.5px;
@@ -169,7 +264,11 @@
             color: var(--muted);
             margin-bottom: 7px;
         }
-        .input-wrap { position: relative; }
+
+        .input-wrap {
+            position: relative;
+        }
+
         .input-prefix {
             position: absolute;
             left: 14px;
@@ -183,6 +282,7 @@
             user-select: none;
             letter-spacing: 0.05em;
         }
+
         .field-input {
             width: 100%;
             padding: 13px 14px;
@@ -197,6 +297,7 @@
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
             -webkit-appearance: none;
         }
+
         .field-input.code-input {
             padding-left: 52px;
             font-family: var(--font-display);
@@ -205,21 +306,25 @@
             letter-spacing: 0.1em;
             color: var(--gold);
         }
+
         .field-input:focus {
             border-color: var(--border-focus);
             box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.15);
         }
+
         .field-input::placeholder {
             color: rgba(148, 163, 184, 0.35);
             font-weight: 500;
             font-size: 14px;
             letter-spacing: normal;
         }
+
         .field-input.code-input::placeholder {
             font-family: var(--font-display);
             font-size: 24px;
             letter-spacing: 0.1em;
         }
+
         .field-input:read-only {
             border-color: rgba(34, 197, 94, 0.35);
             background: rgba(34, 197, 94, 0.05);
@@ -233,11 +338,20 @@
             color: var(--muted);
             padding-left: 2px;
         }
-        .lookup-msg.ok { color: #4ade80; }
-        .lookup-msg.warn { color: #fb923c; }
+
+        .lookup-msg.ok {
+            color: #4ade80;
+        }
+
+        .lookup-msg.warn {
+            color: #fb923c;
+        }
 
         /* ==================== UNIT COMBOBOX (searchable dropdown) ==================== */
-        .combo-wrap { position: relative; }
+        .combo-wrap {
+            position: relative;
+        }
+
         .combo-dropdown {
             position: absolute;
             left: 0;
@@ -252,6 +366,7 @@
             z-index: 30;
             padding: 6px;
         }
+
         .combo-group-label {
             font-size: 10px;
             font-weight: 800;
@@ -261,6 +376,7 @@
             opacity: 0.75;
             padding: 8px 10px 4px;
         }
+
         .combo-option {
             padding: 10px 12px;
             border-radius: 10px;
@@ -273,10 +389,12 @@
             justify-content: space-between;
             gap: 8px;
         }
+
         .combo-option:hover,
         .combo-option.active {
             background: rgba(255, 215, 0, 0.14);
         }
+
         .combo-option .opt-cluster-tag {
             flex-shrink: 0;
             font-size: 10px;
@@ -287,14 +405,22 @@
             border-radius: 999px;
             letter-spacing: 0.03em;
         }
+
         .combo-empty {
             padding: 16px 12px;
             text-align: center;
             font-size: 13px;
             color: var(--muted);
         }
-        .combo-dropdown::-webkit-scrollbar { width: 6px; }
-        .combo-dropdown::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.25); border-radius: 6px; }
+
+        .combo-dropdown::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .combo-dropdown::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.25);
+            border-radius: 6px;
+        }
 
         /* ==================== SEAT PREVIEW ==================== */
         .seat-preview {
@@ -308,6 +434,7 @@
             margin-bottom: 18px;
             animation: popIn 0.3s ease;
         }
+
         .preview-num {
             font-family: var(--font-display);
             font-size: 40px;
@@ -318,12 +445,14 @@
             min-width: 50px;
             text-align: center;
         }
+
         .preview-info .preview-code {
             font-size: 16px;
             font-weight: 800;
             color: var(--text);
             letter-spacing: 0.08em;
         }
+
         .preview-info .preview-label {
             font-size: 11px;
             color: var(--muted);
@@ -350,13 +479,21 @@
             letter-spacing: 0.08em;
             -webkit-appearance: none;
         }
+
         .btn-join:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 8px 32px rgba(255, 215, 0, 0.6);
             background-position: right center;
         }
-        .btn-join:active:not(:disabled) { transform: scale(0.98); }
-        .btn-join:disabled { opacity: 0.45; cursor: not-allowed; }
+
+        .btn-join:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .btn-join:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
 
         .error-msg {
             color: #f87171;
@@ -367,6 +504,46 @@
         }
 
         /* ==================== PLAYER BADGE ==================== */
+        /* Mini event header shown after login */
+        .main-event-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 14px;
+            padding: 10px 14px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.08), rgba(211, 47, 47, 0.05));
+            border: 1px solid rgba(255, 215, 0, 0.18);
+            border-radius: 16px;
+            animation: popIn 0.45s ease;
+        }
+        .main-event-header img {
+            height: 38px;
+            width: 38px;
+            object-fit: contain;
+            border-radius: 7px;
+            filter: drop-shadow(0 1px 5px rgba(255,215,0,0.4));
+            flex-shrink: 0;
+        }
+        .main-event-title {
+            line-height: 1.25;
+        }
+        .main-event-title .ev-name {
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffb800, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.5px;
+        }
+        .main-event-title .ev-sub {
+            font-size: 10.5px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
         .player-badge {
             background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(30, 144, 255, 0.06));
             border: 1px solid rgba(255, 215, 0, 0.2);
@@ -375,7 +552,17 @@
             text-align: center;
             margin-bottom: 14px;
             animation: popIn 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
+        .player-badge::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 60% 50% at 50% -10%, rgba(255,215,0,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
         .badge-seat-num {
             font-family: var(--font-display);
             font-size: 58px;
@@ -384,17 +571,20 @@
             text-shadow: 0 0 30px var(--gold-glow);
             line-height: 1;
         }
+
         .badge-name {
             font-size: 16px;
             font-weight: 700;
             color: var(--text);
             margin-top: 6px;
         }
+
         .badge-unit {
             font-size: 12px;
             color: var(--muted);
             margin-top: 3px;
         }
+
         .badge-code {
             display: inline-block;
             margin-top: 8px;
@@ -413,18 +603,21 @@
             text-align: center;
             padding: 26px 18px;
         }
+
         .status-icon {
             font-size: 56px;
             display: block;
             margin-bottom: 14px;
-            filter: drop-shadow(0 0 12px rgba(255,255,255,0.2));
+            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.2));
         }
+
         .status-title {
             font-size: 20px;
             font-weight: 800;
             color: var(--gold);
             margin-bottom: 8px;
         }
+
         .status-text {
             font-size: 14px;
             color: var(--muted);
@@ -444,7 +637,10 @@
         }
 
         /* ==================== QUESTION PHASE ==================== */
-        .q-wrap { padding: 4px 0; }
+        .q-wrap {
+            padding: 4px 0;
+        }
+
         .q-text {
             font-size: 17px;
             font-weight: 700;
@@ -453,7 +649,11 @@
             line-height: 1.5;
             margin-bottom: 16px;
         }
-        .timer-wrap { margin-bottom: 16px; }
+
+        .timer-wrap {
+            margin-bottom: 16px;
+        }
+
         .timer-label {
             display: flex;
             justify-content: space-between;
@@ -462,12 +662,14 @@
             color: var(--muted);
             margin-bottom: 6px;
         }
+
         .timer-track {
             height: 7px;
             border-radius: 999px;
-            background: rgba(255,255,255,0.07);
+            background: rgba(255, 255, 255, 0.07);
             overflow: hidden;
         }
+
         .timer-fill {
             height: 100%;
             border-radius: 999px;
@@ -480,8 +682,11 @@
             grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
+
         @media (max-width: 370px) {
-            .answer-grid { grid-template-columns: 1fr; }
+            .answer-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .answer-btn {
@@ -497,14 +702,22 @@
             text-align: left;
             -webkit-appearance: none;
         }
-        .answer-btn:active:not(:disabled) { transform: scale(0.96); }
-        .answer-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .answer-btn:active:not(:disabled) {
+            transform: scale(0.96);
+        }
+
+        .answer-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
         .answer-btn .letter {
             flex-shrink: 0;
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -512,6 +725,7 @@
             font-size: 15px;
             color: #fff;
         }
+
         .answer-btn .ans-text {
             font-size: 13px;
             font-weight: 700;
@@ -519,12 +733,31 @@
             color: #fff;
             flex: 1;
         }
-        .answer-btn.opt-0 { background: linear-gradient(135deg, #e63946 0%, #9b111e 100%); }
-        .answer-btn.opt-1 { background: linear-gradient(135deg, #1e90ff 0%, #0a5fd4 100%); }
-        .answer-btn.opt-2 { background: linear-gradient(135deg, #22c55e 0%, #15803d 100%); }
-        .answer-btn.opt-3 { background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); }
-        .answer-btn.is-correct { border-color: #4ade80; box-shadow: 0 0 0 2px #4ade80 inset; }
-        .answer-btn.is-wrong { opacity: 0.28; }
+
+        .answer-btn.opt-0 {
+            background: linear-gradient(135deg, #e63946 0%, #9b111e 100%);
+        }
+
+        .answer-btn.opt-1 {
+            background: linear-gradient(135deg, #1e90ff 0%, #0a5fd4 100%);
+        }
+
+        .answer-btn.opt-2 {
+            background: linear-gradient(135deg, #22c55e 0%, #15803d 100%);
+        }
+
+        .answer-btn.opt-3 {
+            background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%);
+        }
+
+        .answer-btn.is-correct {
+            border-color: #4ade80;
+            box-shadow: 0 0 0 2px #4ade80 inset;
+        }
+
+        .answer-btn.is-wrong {
+            opacity: 0.28;
+        }
 
         .answered-note {
             text-align: center;
@@ -534,22 +767,29 @@
             min-height: 18px;
             font-weight: 600;
         }
-        .answered-note.success { color: #4ade80; }
+
+        .answered-note.success {
+            color: #4ade80;
+        }
 
         /* ==================== ELIM BANNER ==================== */
         #elimBanner {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            background: rgba(180, 16, 56, 0.92);
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background: linear-gradient(90deg, #b31038 0%, #d32f2f 50%, #b31038 100%);
             color: #fff;
             text-align: center;
             padding: 10px 16px;
             font-size: 13px;
             font-weight: 700;
             z-index: 200;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             letter-spacing: 0.04em;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 16px rgba(179, 16, 56, 0.4);
+            margin-bottom: 12px;
         }
 
         /* ==================== LOGOUT LINK ==================== */
@@ -558,28 +798,34 @@
             text-align: center;
             margin-top: 14px;
             font-size: 11px;
-            color: rgba(148,163,184,0.5);
+            color: rgba(148, 163, 184, 0.5);
             cursor: pointer;
             text-decoration: underline;
             text-underline-offset: 3px;
         }
-        .logout-link:hover { color: var(--muted); }
+
+        .logout-link:hover {
+            color: var(--muted);
+        }
     </style>
 </head>
 
 <body>
+
     <div id="starsLayer"></div>
 
-    <div id="elimBanner" class="d-none">💀 Bạn đã bị loại — tiếp tục theo dõi và cổ vũ nhé!</div>
-
     <div class="app-wrap">
+        <div id="elimBanner" class="d-none">💀 Bạn đã bị loại — tiếp tục theo dõi và cổ vũ nhé!</div>
 
         <!-- ============ LOGIN VIEW ============ -->
         <div id="loginView">
             <div class="app-header">
-                <span class="bell-icon">🔔</span>
+                <button class="theme-btn" id="themeBtn" onclick="togglePlayerTheme()">🌙</button>
+                <div class="logo-wrap">
+                    <img src="image/dtn.webp" alt="Logo Đoàn" class="logo-img" onerror="this.style.display='none'">
+                </div>
                 <div class="app-title">Rung Chuông Vàng</div>
-                <div class="app-subtitle">Team Building Mùa Hè 2026</div>
+                <div class="app-subtitle">Phường Xuân Hương – Đà Lạt &bull; 23/7/2026</div>
             </div>
 
             <div class="glass-card">
@@ -591,10 +837,8 @@
                     <label class="field-label" for="codeInput">Số ghế ngồi của bạn</label>
                     <div class="input-wrap">
                         <span class="input-prefix">XH</span>
-                        <input id="codeInput" class="field-input code-input"
-                               type="tel" inputmode="numeric" maxlength="3"
-                               placeholder="031" autocomplete="off"
-                               aria-label="Nhập số ghế 001-130" />
+                        <input id="codeInput" class="field-input code-input" type="tel" inputmode="numeric"
+                            maxlength="3" placeholder="031" autocomplete="off" aria-label="Nhập số ghế 001-200" />
                     </div>
                     <div id="lookupMsg" class="lookup-msg"></div>
                 </div>
@@ -611,18 +855,16 @@
                 <!-- Name -->
                 <div class="field">
                     <label class="field-label" for="nameInput">Họ và tên</label>
-                    <input id="nameInput" class="field-input"
-                           type="text" placeholder="Nguyễn Văn A"
-                           autocomplete="name" autocapitalize="words" />
+                    <input id="nameInput" class="field-input" type="text" placeholder="Nguyễn Văn A" autocomplete="name"
+                        autocapitalize="words" />
                 </div>
 
                 <!-- Unit (searchable dropdown) -->
                 <div class="field">
                     <label class="field-label" for="unitInput">Đơn vị / Chi đoàn</label>
                     <div class="combo-wrap">
-                        <input id="unitInput" class="field-input"
-                               type="text" placeholder="Gõ để tìm tổ dân phố / cụm..."
-                               autocomplete="off" />
+                        <input id="unitInput" class="field-input" type="text"
+                            placeholder="Gõ để tìm tổ dân phố / cụm..." autocomplete="off" />
                         <div id="unitDropdown" class="combo-dropdown d-none"></div>
                     </div>
                 </div>
@@ -631,11 +873,23 @@
                 <div id="loginError" class="error-msg"></div>
             </div>
 
-            <span class="logout-link" onclick="forceClearAndReload()" style="margin-top:12px; display:block;">Đã đăng nhập rồi? Bấm để đổi ghế</span>
+            <span class="logout-link" onclick="forceClearAndReload()" style="margin-top:12px; display:block;">Đã
+                đăng
+                nhập rồi? Bấm để đổi ghế</span>
         </div>
 
         <!-- ============ MAIN VIEW ============ -->
+
         <div id="mainView" class="d-none">
+            <!-- Mini event header -->
+            <div class="main-event-header">
+                <img src="image/dtn.webp" alt="Logo ĐTN" onerror="this.style.display='none'">
+                <div class="main-event-title">
+                    <div class="ev-name">🔔 RUNG CHUÔNG VÀNG</div>
+                    <div class="ev-sub">Phường Xuân Hương – Đà Lạt</div>
+                </div>
+            </div>
+
             <!-- Player badge -->
             <div class="player-badge">
                 <div class="badge-seat-num" id="badgeSeatNum">1</div>
@@ -648,7 +902,9 @@
             <div id="phaseLobby" class="glass-card status-screen">
                 <span class="status-icon">🕒</span>
                 <div class="status-title">Đã vào phòng thành công!</div>
-                <p class="status-text">Vui lòng chờ quản trò bắt đầu trò chơi.<br>Giữ màn hình điện thoại sáng nhé 📱</p>
+                <p class="status-text">Vui lòng chờ quản trò bắt đầu trò chơi.<br>Giữ màn hình điện thoại sáng nhé
+                    📱
+                </p>
             </div>
 
             <!-- Phase: Countdown -->
@@ -710,7 +966,6 @@
     </div>
 
     <script src="clusters-data.js"></script>
-    <script src="questions-data.js"></script>
     <script src="units-data.js"></script>
     <script src="firebase-config.js"></script>
     <script>
@@ -722,8 +977,25 @@
             const s = document.createElement('div');
             s.className = 'star';
             const sz = Math.random() * 2.5 + 0.8;
-            s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${2+Math.random()*4}s;--delay:${Math.random()*5}s;`;
+            s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random() * 100}%;top:${Math.random() * 100}%;--dur:${2 + Math.random() * 4}s;--delay:${Math.random() * 5}s;`;
             starsLayer.appendChild(s);
+        }
+
+        // ========== THEME TOGGLE ==========
+        (function initPlayerTheme() {
+            const saved = localStorage.getItem('rcv_player_theme');
+            if (saved === 'light') {
+                document.documentElement.classList.add('light-mode');
+                const btn = document.getElementById('themeBtn');
+                if (btn) btn.textContent = '\u2600\ufe0f';
+            }
+        })();
+        function togglePlayerTheme() {
+            const root = document.documentElement;
+            const isLight = root.classList.toggle('light-mode');
+            const btn = document.getElementById('themeBtn');
+            if (btn) btn.textContent = isLight ? '\u2600\ufe0f' : '\ud83c\udf19';
+            localStorage.setItem('rcv_player_theme', isLight ? 'light' : 'dark');
         }
 
         // ========== HELPERS ==========
@@ -739,6 +1011,18 @@
         let answeredThisRound = false;
         let timerInterval = null;
         let countdownInterval = null;
+        let myUid = null;
+
+        // Tự động đăng nhập ẩn danh khi vào trang
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                myUid = user.uid;
+            } else {
+                firebase.auth().signInAnonymously().catch(err => {
+                    console.error("Lỗi đăng nhập ẩn danh:", err.message);
+                });
+            }
+        });
 
         function forceClearAndReload() {
             localStorage.removeItem('rcv_code');
@@ -777,7 +1061,7 @@
                 }
                 let html = '';
                 let lastCluster = null;
-                items.slice(0, 60).forEach((u, i) => {
+                items.slice(0, 150).forEach((u, i) => {
                     if (u.cluster !== lastCluster) {
                         html += `<div class="combo-group-label">${u.clusterLabel}</div>`;
                         lastCluster = u.cluster;
@@ -817,7 +1101,7 @@
                 if (dropdown.classList.contains('d-none') || !currentItems.length) return;
                 if (e.key === 'ArrowDown') {
                     e.preventDefault();
-                    activeIndex = Math.min(activeIndex + 1, Math.min(currentItems.length, 60) - 1);
+                    activeIndex = Math.min(activeIndex + 1, Math.min(currentItems.length, 150) - 1);
                     updateActive();
                 } else if (e.key === 'ArrowUp') {
                     e.preventDefault();
@@ -902,8 +1186,8 @@
         function attemptJoin() {
             const raw = $('codeInput').value.trim();
             const num = parseInt(raw, 10);
-            if (!raw || isNaN(num) || num < 1 || num > 130) {
-                $('loginError').textContent = 'Vui lòng nhập số ghế hợp lệ từ 1 đến 130.';
+            if (!raw || isNaN(num) || num < 1 || num > 200) {
+                $('loginError').textContent = 'Vui lòng nhập số ghế hợp lệ từ 1 đến 200.';
                 return;
             }
             const padded = String(num).padStart(3, '0');
@@ -914,11 +1198,26 @@
             const name = ($('nameInput').value || '').trim() || ('Thí sinh ghế ' + num);
             const unit = ($('unitInput').value || '').trim();
 
+            if (!myUid) {
+                $('loginError').textContent = 'Đang khởi tạo kết nối bảo mật... Vui lòng thử lại sau vài giây.';
+                return;
+            }
+
             $('joinBtn').disabled = true;
             $('loginError').textContent = '';
 
+            const bindingRef = db.ref('seat_bindings/' + code);
             const ref = db.ref('teams/' + code);
-            ref.once('value').then(snap => {
+
+            bindingRef.once('value').then(snap => {
+                const boundUid = snap.val();
+                if (boundUid && boundUid !== myUid) {
+                    throw new Error('Ghế này đã được thiết bị khác đăng ký trước đó!');
+                }
+                return bindingRef.set(myUid);
+            }).then(() => {
+                return ref.once('value');
+            }).then(snap => {
                 const existing = snap.val();
                 const keepStatus = existing && existing.status && existing.status !== 'not_joined'
                     ? existing.status : 'alive';
@@ -937,11 +1236,11 @@
                         eliminatedAtQuestion: null,
                         joinedAt: firebase.database.ServerValue.TIMESTAMP,
                     };
-                return ref.set(payload).then(() => {
-                    localStorage.setItem('rcv_code', code);
-                    myCode = code;
-                    enterMain(parsed, name, unit);
-                });
+                return ref.set(payload);
+            }).then(() => {
+                localStorage.setItem('rcv_code', code);
+                myCode = code;
+                enterMain(parsed, name, unit);
             }).catch(err => {
                 $('loginError').textContent = 'Lỗi kết nối: ' + err.message;
                 $('joinBtn').disabled = false;
@@ -1025,7 +1324,7 @@
                 showPhase('phaseQuestion');
                 $('timerWrap').style.display = 'none';
                 $('answerGrid').style.display = 'none';
-                const q = QUESTIONS[game.currentQuestionIndex];
+                const q = game.currentQuestion;
                 $('pQuestionText').textContent = q ? q.text : '';
                 $('answeredNote').textContent = 'Chuẩn bị trả lời...';
                 $('answeredNote').className = 'answered-note';
@@ -1039,14 +1338,20 @@
                 showPhase('phaseQuestion');
                 $('timerWrap').style.display = 'block';
                 $('answerGrid').style.display = 'grid';
-                const q = QUESTIONS[game.currentQuestionIndex];
+                const q = game.currentQuestion;
                 $('pQuestionText').textContent = q ? q.text : '';
-                if (q) {
-                    $('pOptA').textContent = q.options.A;
-                    $('pOptB').textContent = q.options.B;
-                    $('pOptC').textContent = q.options.C;
-                    $('pOptD').textContent = q.options.D;
+                if (q && q.options) {
+                    $('pOptA').textContent = q.options.A || '';
+                    $('pOptB').textContent = q.options.B || '';
+                    $('pOptC').textContent = q.options.C || '';
+                    $('pOptD').textContent = q.options.D || '';
                 }
+                // Ẩn nút của lựa chọn rỗng (câu hỏi Đúng/Sai hoặc chỉ 2-3 phương án)
+                ['A', 'B', 'C', 'D'].forEach((letter, i) => {
+                    const btn = document.querySelectorAll('#answerGrid .answer-btn')[i];
+                    const hasOpt = q && q.options && q.options[letter] && q.options[letter].trim();
+                    if (btn) btn.style.display = hasOpt ? '' : 'none';
+                });
                 const buttons = document.querySelectorAll('#answerGrid .answer-btn');
                 buttons.forEach(b => {
                     b.disabled = !!eliminated;
@@ -1066,7 +1371,8 @@
             } else if (game.phase === 'reveal' || game.phase === 'result') {
                 clearTimers();
                 showPhase('phaseReveal');
-                const q = QUESTIONS[game.currentQuestionIndex];
+                const q = game.currentQuestion;
+                const correct = game.currentCorrectAnswer;
                 const wasElimBefore = myPlayer && myPlayer.eliminatedAtQuestion !== null
                     && myPlayer.eliminatedAtQuestion !== undefined
                     && myPlayer.eliminatedAtQuestion <= game.currentQuestionIndex;
@@ -1080,7 +1386,7 @@
                     $('revealIcon').textContent = '✅';
                     $('revealTitle').textContent = 'Chính xác! Tiếp tục nào!';
                 }
-                $('revealText').textContent = 'Đáp án đúng: ' + (q ? q.options[q.correct] : '—');
+                $('revealText').textContent = 'Đáp án đúng: ' + (q && q.options && correct ? (correct + '. ' + q.options[correct]) : '—');
 
             } else if (game.phase === 'finished') {
                 clearTimers();

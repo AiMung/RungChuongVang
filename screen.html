@@ -4,50 +4,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rung Chuông Vàng — Màn hình chính</title>
+    <title>Rung Chuông Vàng Phường Xuân Hương – Đà Lạt</title>
     <meta name="description" content="Màn hình chiếu chính cho Ban tổ chức cuộc thi Rung Chuông Vàng">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Fredoka:wght@500;600;700&display=swap&text=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴÝỶỸưăạảấầẩẫậắằẳẵặẹẻẽềềểếễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵýỷỹ"
+        rel="stylesheet">
     <style>
-        /* ==================== TOKENS ==================== */
+        /* ==================== TOKENS (SÁNG — VÀNG & XANH DƯƠNG, mặc định) ==================== */
         :root {
-            --gold: #ffd700;
-            --gold-2: #ffb800;
-            --gold-glow: rgba(255, 215, 0, 0.5);
-            --blue: #1e90ff;
-            --blue-dark: #0a5fd4;
-            --blue-soft: rgba(30, 144, 255, 0.15);
-            --red: #e63946;
-            --red-soft: rgba(230, 57, 70, 0.15);
-            --green: #22c55e;
-            --green-soft: rgba(34, 197, 94, 0.15);
-            --orange: #f97316;
-            --bg: #05080f;
-            --bg2: #080d1a;
-            --card: rgba(255,255,255,0.04);
-            --border: rgba(255,255,255,0.07);
-            --text: #f1f5f9;
-            --muted: #64748b;
+            --gold: #f59e0b;
+            --gold-2: #fbbf24;
+            --gold-text: #b45309;
+            --gold-glow: rgba(245, 158, 11, 0.45);
+            --red-main: #dc2626;
+            --blue: #2563eb;
+            --blue-dark: #1d4ed8;
+            --blue-soft: rgba(37, 99, 235, 0.12);
+            --red: #dc2626;
+            --red-soft: rgba(220, 38, 38, 0.12);
+            --green: #059669;
+            --green-soft: rgba(5, 150, 105, 0.12);
+            --orange: #ea580c;
+            --bg: #f6f9ff;
+            --bg2: #fffaeb;
+            --card: rgba(37, 99, 235, 0.05);
+            --border: rgba(37, 99, 235, 0.22);
+            --text: #0f172a;
+            --muted: #475569;
+            --topbar-bg: rgba(255, 255, 255, 0.92);
+            --topbar-border: rgba(37, 99, 235, 0.22);
             --font: 'Be Vietnam Pro', sans-serif;
             --font-d: 'Fredoka', sans-serif;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        /* ==================== TỐI MODE (tuỳ chọn, bấm nút để bật) ==================== */
+        :root.dark-mode {
+            --gold: #ffd700;
+            --gold-2: #ffb800;
+            --gold-text: #ffd700;
+            --gold-glow: rgba(255, 215, 0, 0.5);
+            --bg: #05080f;
+            --bg2: #080d1a;
+            --card: rgba(255, 255, 255, 0.04);
+            --border: rgba(255, 255, 255, 0.07);
+            --text: #f1f5f9;
+            --muted: #94a3b8;
+            --topbar-bg: rgba(5, 8, 15, 0.88);
+            --topbar-border: rgba(255, 215, 0, 0.18);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: var(--font);
             color: var(--text);
             background: var(--bg);
             background-image:
-                radial-gradient(ellipse 80% 40% at 50% 0%, rgba(30,144,255,0.2) 0%, transparent 65%),
-                radial-gradient(ellipse 60% 35% at 92% 95%, rgba(230,57,70,0.1) 0%, transparent 55%),
-                radial-gradient(ellipse 55% 30% at 8% 95%, rgba(255,215,0,0.08) 0%, transparent 50%);
-            background-attachment: fixed;
+                radial-gradient(ellipse 80% 40% at 50% 0%, rgba(37, 99, 235, 0.16) 0%, transparent 65%),
+                radial-gradient(ellipse 60% 35% at 92% 95%, rgba(245, 158, 11, 0.14) 0%, transparent 55%),
+                radial-gradient(ellipse 55% 30% at 8% 95%, rgba(220, 38, 38, 0.06) 0%, transparent 50%);
             min-height: 100vh;
             overflow-x: hidden;
+            transition: background 0.3s, color 0.3s;
         }
 
-        .d-none { display: none !important; }
+        :root.dark-mode body {
+            background-image:
+                radial-gradient(ellipse 80% 40% at 50% 0%, rgba(30, 144, 255, 0.15) 0%, transparent 65%),
+                radial-gradient(ellipse 60% 35% at 92% 95%, rgba(211, 47, 47, 0.08) 0%, transparent 55%),
+                radial-gradient(ellipse 55% 30% at 8% 95%, rgba(255, 215, 0, 0.08) 0%, transparent 50%);
+        }
+
+        .d-none {
+            display: none !important;
+        }
 
         /* ==================== TOP BAR ==================== */
         .top-bar {
@@ -56,24 +91,80 @@
             z-index: 100;
             display: flex;
             align-items: center;
-            gap: 16px;
-            padding: 10px 20px;
-            background: rgba(5, 8, 15, 0.82);
-            border-bottom: 1px solid rgba(255, 215, 0, 0.12);
+            gap: 12px;
+            padding: 8px 16px;
+            background: var(--topbar-bg);
+            border-bottom: 1px solid var(--topbar-border);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             flex-wrap: wrap;
+            transition: background 0.3s, border-color 0.3s;
         }
 
-        .bar-title {
+        /* Logo section */
+        .bar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .bar-logo img {
+            height: 44px;
+            width: 44px;
+            object-fit: contain;
+            border-radius: 8px;
+            filter: drop-shadow(0 2px 6px rgba(255, 215, 0, 0.35));
+        }
+
+        .bar-logo-text {
+            line-height: 1.2;
+        }
+
+        .bar-logo-text .event-name {
             font-family: var(--font-d);
-            font-size: 22px;
+            font-size: 16px;
             font-weight: 700;
             background: linear-gradient(135deg, var(--gold-2), var(--gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             white-space: nowrap;
+        }
+
+        .bar-logo-text .event-sub {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .bar-title {
+            font-family: var(--font-d);
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--gold-2), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            white-space: nowrap;
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            padding: 5px 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--gold);
         }
 
         .phase-chip {
@@ -86,10 +177,30 @@
             border: 1px solid;
             white-space: nowrap;
         }
-        .chip-lobby  { background: var(--blue-soft);  color: var(--blue);  border-color: rgba(30,144,255,0.3); }
-        .chip-q      { background: rgba(255,215,0,.12); color: var(--gold);  border-color: rgba(255,215,0,.3); }
-        .chip-result { background: var(--green-soft); color: var(--green); border-color: rgba(34,197,94,.3); }
-        .chip-end    { background: rgba(255,152,0,.12); color: var(--orange); border-color: rgba(255,152,0,.3); }
+
+        .chip-lobby {
+            background: var(--blue-soft);
+            color: var(--blue);
+            border-color: rgba(30, 144, 255, 0.3);
+        }
+
+        .chip-q {
+            background: rgba(255, 215, 0, .18);
+            color: var(--gold-text);
+            border-color: rgba(217, 119, 6, .35);
+        }
+
+        .chip-result {
+            background: var(--green-soft);
+            color: var(--green);
+            border-color: rgba(34, 197, 94, .3);
+        }
+
+        .chip-end {
+            background: rgba(255, 152, 0, .12);
+            color: var(--orange);
+            border-color: rgba(255, 152, 0, .3);
+        }
 
         .bar-stats {
             display: flex;
@@ -97,13 +208,18 @@
             align-items: center;
             margin-left: auto;
         }
-        .stat-item { text-align: center; }
+
+        .stat-item {
+            text-align: center;
+        }
+
         .stat-n {
             font-family: var(--font-d);
             font-size: 20px;
             font-weight: 700;
             line-height: 1;
         }
+
         .stat-l {
             font-size: 9px;
             color: var(--muted);
@@ -111,10 +227,24 @@
             letter-spacing: 0.05em;
             margin-top: 2px;
         }
-        .stat-div { width: 1px; height: 30px; background: var(--border); }
-        .stat-joined .stat-n { color: var(--gold); }
-        .stat-alive  .stat-n { color: var(--green); }
-        .stat-dead   .stat-n { color: var(--red); }
+
+        .stat-div {
+            width: 1px;
+            height: 30px;
+            background: var(--border);
+        }
+
+        .stat-joined .stat-n {
+            color: var(--gold-text);
+        }
+
+        .stat-alive .stat-n {
+            color: var(--green);
+        }
+
+        .stat-dead .stat-n {
+            color: var(--red);
+        }
 
         .bar-controls {
             display: flex;
@@ -136,13 +266,33 @@
             transition: all 0.15s;
             white-space: nowrap;
         }
-        .ctrl-btn:hover   { border-color: var(--gold); color: var(--gold); }
-        .ctrl-btn.active  { background: rgba(255,215,0,.12); border-color: var(--gold); color: var(--gold); }
-        .ctrl-btn.editing { background: rgba(230,57,70,.12); border-color: var(--red); color: var(--red); }
-        .ctrl-btn.danger  { border-color: rgba(148,163,184,.3); color: var(--muted); }
+
+        .ctrl-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold-text);
+        }
+
+        .ctrl-btn.active {
+            background: rgba(255, 215, 0, .18);
+            border-color: var(--gold);
+            color: var(--gold-text);
+        }
+
+        .ctrl-btn.editing {
+            background: rgba(230, 57, 70, .12);
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .ctrl-btn.danger {
+            border-color: rgba(148, 163, 184, .3);
+            color: var(--muted);
+        }
 
         /* ==================== MAIN ==================== */
-        .screen-main { padding: 16px 18px 28px; }
+        .screen-main {
+            padding: 16px 18px 28px;
+        }
 
         /* ==================== LOBBY HEADING ==================== */
         .lobby-heading {
@@ -150,6 +300,7 @@
             padding: 10px 0 6px;
             margin-bottom: 10px;
         }
+
         .lobby-title {
             font-family: var(--font-d);
             font-size: 32px;
@@ -159,6 +310,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
         .lobby-sub {
             font-size: 16px;
             color: var(--muted);
@@ -168,22 +320,28 @@
         /* ==================== QUESTION PANEL ==================== */
         .q-panel {
             background: var(--card);
-            border: 1px solid rgba(255,215,0,.14);
+            border: 1px solid rgba(255, 215, 0, .14);
             border-radius: 20px;
             padding: 24px 30px;
             text-align: center;
             margin-bottom: 16px;
         }
+
         .big-timer {
             font-family: var(--font-d);
             font-size: 72px;
             font-weight: 700;
-            color: var(--gold);
+            color: var(--gold-text);
             text-shadow: 0 0 30px var(--gold-glow);
             line-height: 1;
             transition: color 0.3s;
         }
-        .big-timer.urgent { color: var(--red); text-shadow: 0 0 30px rgba(230,57,70,0.6); }
+
+        .big-timer.urgent {
+            color: var(--red);
+            text-shadow: 0 0 30px rgba(230, 57, 70, 0.6);
+        }
+
         .q-text {
             font-size: 30px;
             font-weight: 800;
@@ -191,6 +349,7 @@
             line-height: 1.4;
             margin: 18px 0 20px;
         }
+
         .opt-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -198,25 +357,83 @@
             max-width: 1060px;
             margin: 0 auto;
         }
+
         .opt-box {
             padding: 18px 22px;
             border-radius: 16px;
             font-size: 22px;
             font-weight: 700;
             text-align: left;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.45s cubic-bezier(0.16,1,0.3,1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .opt-A { background: linear-gradient(135deg, rgba(230,57,70,.25), rgba(155,17,30,.12)); border-color: rgba(230,57,70,.4); color: #fca5a5; }
-        .opt-B { background: linear-gradient(135deg, rgba(30,144,255,.25), rgba(10,95,212,.12)); border-color: rgba(30,144,255,.4); color: #93c5fd; }
-        .opt-C { background: linear-gradient(135deg, rgba(34,197,94,.25), rgba(21,128,61,.12)); border-color: rgba(34,197,94,.4); color: #86efac; }
-        .opt-D { background: linear-gradient(135deg, rgba(255,215,0,.2), rgba(180,150,0,.1)); border-color: rgba(255,215,0,.4); color: var(--gold); }
+
+        .opt-A {
+            background: linear-gradient(135deg, #ef4444, #b91c1c);
+            border-color: rgba(220, 38, 38, .5);
+            color: #fff;
+        }
+
+        .opt-B {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-color: rgba(37, 99, 235, .5);
+            color: #fff;
+        }
+
+        .opt-C {
+            background: linear-gradient(135deg, #10b981, #047857);
+            border-color: rgba(5, 150, 105, .5);
+            color: #fff;
+        }
+
+        .opt-D {
+            background: linear-gradient(135deg, #fbbf24, #d97706);
+            border-color: rgba(217, 119, 6, .5);
+            color: #3a1d00;
+        }
+
         .opt-box.reveal-correct {
-            background: linear-gradient(135deg, #22c55e, #15803d) !important;
-            border-color: #4ade80 !important;
-            color: #fff !important;
-            transform: scale(1.04);
-            box-shadow: 0 0 50px rgba(34,197,94,0.6);
+            background: linear-gradient(135deg, var(--gold-2), var(--gold)) !important;
+            border: 3px solid #fff !important;
+            color: #3a1d00 !important;
+            transform: scale(1.08);
+            box-shadow: 0 0 0 6px rgba(255, 215, 0, .25), 0 14px 40px rgba(245, 158, 11, .55);
+            position: relative;
+            z-index: 2;
+            animation: correctPulse 1.4s ease-in-out infinite;
+        }
+
+        .opt-box.reveal-correct::before {
+            content: '✓ ĐÁP ÁN ĐÚNG';
+            position: absolute;
+            top: -14px;
+            left: 18px;
+            background: var(--green);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 3px 12px;
+            border-radius: 999px;
+            letter-spacing: .03em;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, .25);
+        }
+
+        @keyframes correctPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 6px rgba(255, 215, 0, .25), 0 14px 40px rgba(245, 158, 11, .55);
+            }
+
+            50% {
+                box-shadow: 0 0 0 10px rgba(255, 215, 0, .15), 0 14px 55px rgba(245, 158, 11, .8);
+            }
+        }
+
+        .opt-box.dim-wrong {
+            opacity: .32;
+            transform: scale(0.97);
+            filter: grayscale(.35);
         }
 
         .answered-line {
@@ -233,41 +450,80 @@
             gap: 48px;
             margin-top: 16px;
             padding: 18px 24px;
-            background: rgba(255,255,255,.03);
+            background: var(--card);
             border-radius: 16px;
             border: 1px solid var(--border);
         }
-        .rb-item { text-align: center; }
+
+        .rb-item {
+            text-align: center;
+        }
+
         .rb-num {
             font-family: var(--font-d);
             font-size: 44px;
             font-weight: 700;
             line-height: 1;
         }
-        .rb-label { font-size: 13px; color: var(--muted); margin-top: 3px; }
-        .rb-alive .rb-num  { color: var(--green); text-shadow: 0 0 20px rgba(34,197,94,.4); }
-        .rb-dead  .rb-num  { color: var(--red);   text-shadow: 0 0 20px rgba(230,57,70,.4); }
-        .rb-now   .rb-num  { color: var(--orange); }
+
+        .rb-label {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 3px;
+        }
+
+        .rb-alive .rb-num {
+            color: var(--green);
+            text-shadow: 0 0 20px rgba(34, 197, 94, .4);
+        }
+
+        .rb-dead .rb-num {
+            color: var(--red);
+            text-shadow: 0 0 20px rgba(230, 57, 70, .4);
+        }
+
+        .rb-now .rb-num {
+            color: var(--orange);
+        }
 
         /* ==================== WIN ==================== */
         .win-screen {
             text-align: center;
             padding: 60px 20px;
         }
-        .win-emoji  { font-size: 80px; display: block; }
-        .win-title  {
+
+        .win-emoji {
+            font-size: 80px;
+            display: block;
+        }
+
+        .win-title {
             font-family: var(--font-d);
             font-size: 56px;
             font-weight: 700;
-            color: var(--gold);
+            color: var(--gold-text);
             text-shadow: 0 0 40px var(--gold-glow);
             margin-top: 16px;
         }
-        .win-name   { font-size: 32px; font-weight: 800; color: var(--text); margin-top: 10px; }
-        .win-unit   { font-size: 18px; color: var(--muted); margin-top: 6px; }
+
+        .win-name {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text);
+            margin-top: 10px;
+        }
+
+        .win-unit {
+            font-size: 18px;
+            color: var(--muted);
+            margin-top: 6px;
+        }
 
         /* ==================== SEAT GRID ==================== */
-        .grid-section { margin-top: 12px; }
+        .grid-section {
+            margin-top: 12px;
+        }
+
         .grid-container {
             display: grid;
             gap: 5px;
@@ -280,13 +536,18 @@
             justify-content: center;
             border-radius: 9px;
             padding: 6px 4px 5px;
-            border: 1px solid rgba(255,255,255,0.05);
-            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(37, 99, 235, 0.12);
+            background: rgba(37, 99, 235, 0.03);
             min-height: 72px;
             position: relative;
             overflow: hidden;
             transition: background 0.3s, border-color 0.3s, transform 0.2s, opacity 0.3s;
             cursor: default;
+        }
+
+        :root.dark-mode .seat-cell {
+            border-color: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.025);
         }
 
         /* number */
@@ -295,9 +556,14 @@
             font-size: 22px;
             font-weight: 700;
             line-height: 1;
-            color: rgba(255,255,255,0.22);
+            color: rgba(15, 23, 42, 0.25);
             transition: color 0.3s;
         }
+
+        :root.dark-mode .cell-num {
+            color: rgba(255, 255, 255, 0.22);
+        }
+
         /* name */
         .cell-name {
             font-size: 9px;
@@ -312,10 +578,11 @@
             line-height: 1.25;
             transition: color 0.3s;
         }
+
         /* unit */
         .cell-unit {
             font-size: 7.5px;
-            color: rgba(100,116,139,0.65);
+            color: rgba(100, 116, 139, 0.65);
             text-align: center;
             white-space: nowrap;
             overflow: hidden;
@@ -325,32 +592,63 @@
         }
 
         /* ---- STATES ---- */
-        .seat-cell.not_joined { opacity: 0.28; }
-        .seat-cell.not_joined .cell-num { color: rgba(255,255,255,0.18); }
+        .seat-cell.not_joined {
+            opacity: 0.4;
+        }
+
+        .seat-cell.not_joined .cell-num {
+            color: rgba(15, 23, 42, 0.18);
+        }
+
+        :root.dark-mode .seat-cell.not_joined .cell-num {
+            color: rgba(255, 255, 255, 0.18);
+        }
 
         .seat-cell.alive {
-            background: rgba(30,144,255,0.1);
-            border-color: rgba(30,144,255,0.35);
+            background: rgba(37, 99, 235, 0.1);
+            border-color: rgba(37, 99, 235, 0.35);
         }
-        .seat-cell.alive .cell-num  { color: #60a5fa; }
-        .seat-cell.alive .cell-name { color: var(--text); font-weight: 700; }
+
+        .seat-cell.alive .cell-num {
+            color: var(--blue-dark);
+        }
+
+        .seat-cell.alive .cell-name {
+            color: var(--text);
+            font-weight: 700;
+        }
 
         .seat-cell.unanswered {
-            background: rgba(249,115,22,0.13);
-            border-color: rgba(249,115,22,0.45);
+            background: rgba(249, 115, 22, 0.13);
+            border-color: rgba(249, 115, 22, 0.45);
             animation: pulseOrange 1.6s ease-in-out infinite;
         }
-        .seat-cell.unanswered .cell-num { color: var(--orange); }
+
+        .seat-cell.unanswered .cell-num {
+            color: var(--orange);
+        }
+
         @keyframes pulseOrange {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(249,115,22,0); }
-            50% { box-shadow: 0 0 0 3px rgba(249,115,22,0.3); }
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(249, 115, 22, 0);
+            }
+
+            50% {
+                box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.3);
+            }
         }
 
         .seat-cell.answered {
-            background: rgba(34,197,94,0.14);
-            border-color: rgba(34,197,94,0.5);
+            background: rgba(5, 150, 105, 0.14);
+            border-color: rgba(5, 150, 105, 0.5);
         }
-        .seat-cell.answered .cell-num { color: #4ade80; }
+
+        .seat-cell.answered .cell-num {
+            color: var(--green);
+        }
+
         .seat-cell.answered::after {
             content: '✓';
             position: absolute;
@@ -362,42 +660,76 @@
         }
 
         .seat-cell.eliminated {
-            background: rgba(230,57,70,0.06);
-            border-color: rgba(230,57,70,0.18);
+            background: rgba(230, 57, 70, 0.06);
+            border-color: rgba(230, 57, 70, 0.18);
             opacity: 0.48;
         }
-        .seat-cell.eliminated .cell-num  { color: var(--red); text-decoration: line-through; }
-        .seat-cell.eliminated .cell-name { text-decoration: line-through; opacity: 0.6; }
+
+        .seat-cell.eliminated .cell-num {
+            color: var(--red);
+            text-decoration: line-through;
+        }
+
+        .seat-cell.eliminated .cell-name {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
 
         @keyframes flashElim {
-            0%   { background: rgba(230,57,70,0.75); transform: scale(1.1); border-color: var(--red); opacity: 1; }
-            30%  { background: rgba(230,57,70,0.35); transform: scale(1.02); opacity: 1; }
-            100% { background: rgba(230,57,70,0.06); transform: scale(1); border-color: rgba(230,57,70,0.18); opacity: 0.48; }
+            0% {
+                background: rgba(230, 57, 70, 0.75);
+                transform: scale(1.1);
+                border-color: var(--red);
+                opacity: 1;
+            }
+
+            30% {
+                background: rgba(230, 57, 70, 0.35);
+                transform: scale(1.02);
+                opacity: 1;
+            }
+
+            100% {
+                background: rgba(230, 57, 70, 0.06);
+                transform: scale(1);
+                border-color: rgba(230, 57, 70, 0.18);
+                opacity: 0.48;
+            }
         }
+
         .seat-cell.died-this-round {
-            animation: flashElim 2.5s cubic-bezier(0.16,1,0.3,1) forwards;
+            animation: flashElim 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         .seat-cell.winner {
-            background: rgba(255,215,0,0.18);
+            background: rgba(255, 215, 0, 0.18);
             border-color: var(--gold);
-            box-shadow: 0 0 22px rgba(255,215,0,0.35);
+            box-shadow: 0 0 22px rgba(255, 215, 0, 0.35);
         }
-        .seat-cell.winner .cell-num { color: var(--gold); }
+
+        .seat-cell.winner .cell-num {
+            color: var(--gold-text);
+        }
 
         /* ---- EDIT MODE ---- */
         .edit-mode-on .seat-cell {
             cursor: grab;
             border-style: dashed;
         }
+
         .edit-mode-on .seat-cell:hover {
-            border-color: rgba(255,215,0,0.5);
-            background: rgba(255,215,0,0.06);
+            border-color: rgba(255, 215, 0, 0.5);
+            background: rgba(255, 215, 0, 0.06);
         }
-        .seat-cell.dragging { opacity: 0.35; transform: scale(0.94); }
+
+        .seat-cell.dragging {
+            opacity: 0.35;
+            transform: scale(0.94);
+        }
+
         .seat-cell.drag-over {
             border-color: var(--gold) !important;
-            background: rgba(255,215,0,0.18) !important;
+            background: rgba(255, 215, 0, 0.18) !important;
             transform: scale(1.06);
         }
 
@@ -408,15 +740,424 @@
             bottom: 3px;
             right: 4px;
             font-size: 9px;
-            color: rgba(255,215,0,0.4);
+            color: rgba(255, 215, 0, 0.4);
         }
 
         /* ==================== SLIDE UP ANIM ==================== */
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        .slide-up { animation: slideUp 0.55s cubic-bezier(0.16,1,0.3,1) both; }
+
+        .slide-up {
+            animation: slideUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .stats-chart-wrap {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            justify-content: center;
+            margin: 18px auto;
+            max-width: 560px;
+        }
+
+        .donut {
+            width: 96px;
+            height: 96px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: conic-gradient(var(--green) 0deg var(--donut-deg, 0deg), var(--red) var(--donut-deg, 0deg) 360deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, .12);
+        }
+
+        .donut::after {
+            content: '';
+            width: 66px;
+            height: 66px;
+            border-radius: 50%;
+            background: var(--bg);
+            position: absolute;
+        }
+
+        .donut-label {
+            position: relative;
+            z-index: 1;
+            font-family: var(--font-d);
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .mini-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 13px;
+        }
+
+        .mini-legend span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .bar-compare {
+            flex: 1;
+            max-width: 260px;
+        }
+
+        .bar-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .bar-row .track {
+            flex: 1;
+            height: 14px;
+            background: var(--card);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .bar-row .fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width .6s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .fill-correct {
+            background: var(--green);
+        }
+
+        .fill-wrong {
+            background: var(--red);
+        }
+
+        .result-bar {
+            margin-top: 16px;
+        }
+
+        .result-card {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 22px 30px;
+            background: var(--card);
+            border-radius: 16px;
+
+        }
+
+        .result-donut-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .result-donut-col .donut {
+            width: 112px;
+            height: 112px;
+        }
+
+        .result-donut-col .donut::after {
+            width: 78px;
+            height: 78px;
+        }
+
+        .donut-label {
+            font-size: 20px;
+        }
+
+        .donut-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 13px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .donut-legend span {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .donut-legend b {
+            color: var(--text);
+            font-family: var(--font-d);
+        }
+
+        .result-divider {
+            width: 1px;
+            align-self: stretch;
+            background: var(--border);
+        }
+
+        .result-bar-col {
+            flex: 1;
+        }
+
+        .result-bar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+
+        .badge-now {
+            color: var(--orange);
+            background: rgba(234, 88, 12, .12);
+            padding: 3px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        .badge-now b {
+            font-family: var(--font-d);
+        }
+
+        .bar-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .bar-tag {
+            width: 52px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .bar-val {
+            width: 28px;
+            text-align: right;
+            font-weight: 700;
+            font-family: var(--font-d);
+        }
+
+        .track {
+            flex: 1;
+            height: 14px;
+            background: rgba(148, 163, 184, .18);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width .6s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .fill-correct {
+            background: var(--green);
+        }
+
+        .fill-wrong {
+            background: var(--red);
+        }
+
+        .result-card {
+            padding: 20px 30px 26px;
+            background: linear-gradient(180deg, var(--card), rgba(37, 99, 235, .02));
+            border-radius: 18px;
+
+        }
+
+        .result-title {
+            font-family: var(--font-d);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--gold-text);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .result-body {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .result-donut-col .donut {
+            width: 118px;
+            height: 118px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .15), 0 0 0 6px var(--bg);
+        }
+
+        .result-donut-col .donut::after {
+            width: 82px;
+            height: 82px;
+        }
+
+        .donut-label {
+            font-size: 21px;
+        }
+
+        .bar-tag {
+            width: 58px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .bar-val {
+            min-width: 28px;
+            text-align: center;
+            padding: 2px 9px;
+            background: var(--bg);
+            border-radius: 8px;
+            font-family: var(--font-d);
+            font-weight: 700;
+        }
+
+        .choice-dist .bar-row {
+            margin-bottom: 9px;
+        }
+
+        .bar-tag.tag-correct {
+            color: var(--gold-text);
+            font-weight: 900;
+        }
+
+        .result-divider-h {
+            height: 1px;
+            background: var(--border);
+            margin: 18px 0 14px;
+        }
+
+        .elim-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            height: 100px;
+            padding-top: 12px;
+            overflow-x: auto;
+        }
+
+        .elim-bar-col {
+            flex: 0 0 auto;
+            width: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            height: 100%;
+            gap: 4px;
+        }
+
+        .elim-bar {
+            width: 100%;
+            max-width: 26px;
+            border-radius: 6px 6px 2px 2px;
+            background: linear-gradient(180deg, #ef4444, var(--red));
+            transition: height .5s cubic-bezier(.16, 1, .3, 1);
+            min-height: 3px;
+        }
+
+        .elim-bar.current {
+            background: linear-gradient(180deg, var(--gold-2), var(--gold));
+            box-shadow: 0 0 12px rgba(245, 158, 11, .5);
+        }
+
+        .elim-bar-label {
+            font-size: 10px;
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .elim-bar-count {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text);
+            min-height: 14px;
+        }
+
+        .donut.no-data {
+            background: conic-gradient(var(--border) 0deg 360deg) !important;
+        }
+
+        .cw-summary {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .cw-item {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .cw-item b {
+            font-family: var(--font-d);
+            font-size: 18px;
+        }
+
+        .cw-correct {
+            background: var(--green-soft);
+            color: var(--green);
+        }
+
+        .cw-wrong {
+            background: var(--red-soft);
+            color: var(--red);
+        }
+
+        /* Chữ tiếng Việt có dấu luôn dùng Be Vietnam Pro để hiển thị đúng dấu */
+        .lobby-title,
+        .win-title,
+        .win-name,
+        .win-unit,
+        .q-text,
+        .cell-name,
+        .cell-unit,
+        .donut-legend,
+        .result-title,
+        .result-bar-header,
+        .bar-tag,
+        .elim-bar-label,
+        .cw-item {
+            font-family: var(--font) !important;
+        }
     </style>
 </head>
 
@@ -424,7 +1165,15 @@
 
     <!-- ============================== TOP BAR ============================== -->
     <div class="top-bar">
-        <div class="bar-title">🔔 RUNG CHUÔNG VÀNG</div>
+        <!-- Logo + Tên sự kiện -->
+        <div class="bar-logo">
+            <img src="image/dtn.webp" alt="Logo Đoàn Thanh niên" onerror="this.style.display='none'">
+            <div class="bar-logo-text">
+                <div class="event-name">🔔 RUNG CHUÔNG VÀNG</div>
+                <div class="event-sub">Phường Xuân Hương – Đà Lạt</div>
+            </div>
+        </div>
+
         <div class="phase-chip chip-lobby" id="phaseChip">Phòng chờ</div>
 
         <div class="bar-stats">
@@ -445,10 +1194,12 @@
         </div>
 
         <div class="bar-controls">
-            <button class="ctrl-btn active" id="btn13x10" onclick="setLayout(13,10)">13 × 10</button>
-            <button class="ctrl-btn" id="btn10x13" onclick="setLayout(10,13)">10 × 13</button>
+            <button class="ctrl-btn active" id="btn20x10" onclick="setLayout(20)">20 × 10</button>
+            <button class="ctrl-btn" id="btn25x8" onclick="setLayout(25)">25 × 8</button>
+            <button class="ctrl-btn" id="btn10x20" onclick="setLayout(10)">10 × 20</button>
             <button class="ctrl-btn" id="editBtn" onclick="toggleEditMode()">✏️ Sắp xếp</button>
-            <button class="ctrl-btn danger d-none" id="resetBtn" onclick="resetLayout()">↺ Đặt lại</button>
+            <button class="ctrl-btn danger d-none" id="resetBtn" onclick="resetLayout()">&#8635; Đặt lại</button>
+            <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Chuyển sáng/tối">🌙</button>
         </div>
     </div>
 
@@ -458,8 +1209,8 @@
         <!-- LOBBY HEADING -->
         <div id="lobbyView">
             <div class="lobby-heading slide-up">
-                <div class="lobby-title">Đang chờ thí sinh vào phòng...</div>
-                <div class="lobby-sub" id="lobbyCount">0 / 130 thí sinh đã đăng nhập</div>
+                <div class="lobby-title">Hội thi Rung Chuông Vàng – Phường Xuân Hương</div>
+                <div class="lobby-sub" id="lobbyCount">0 / 200 thí sinh đã đăng nhập</div>
             </div>
         </div>
 
@@ -478,17 +1229,38 @@
                 <div class="answered-line d-none" id="answeredLine"></div>
                 <!-- Result stats (result phase) -->
                 <div class="result-bar d-none" id="resultBar">
-                    <div class="rb-item rb-alive">
-                        <div class="rb-num" id="rbAlive">0</div>
-                        <div class="rb-label">Còn lại</div>
-                    </div>
-                    <div class="rb-item rb-dead">
-                        <div class="rb-num" id="rbDead">0</div>
-                        <div class="rb-label">Tổng bị loại</div>
-                    </div>
-                    <div class="rb-item rb-now">
-                        <div class="rb-num" id="rbNow">0</div>
-                        <div class="rb-label">Vòng này</div>
+                    <div class="result-card">
+                        <div class="result-title">📊 Thống kê kết quả</div>
+                        <div class="result-body">
+                            <div class="result-donut-col">
+                                <div class="donut" id="overallDonut" style="--donut-deg:0deg;">
+                                    <div class="donut-label" id="donutPct">0%</div>
+                                </div>
+                                <div class="donut-legend">
+                                    <span><i class="dot" style="background:var(--green)"></i>Còn lại <b
+                                            id="rbAlive">0</b></span>
+                                    <span><i class="dot" style="background:var(--red)"></i>Bị loại <b
+                                            id="rbDead">0</b></span>
+                                </div>
+                            </div>
+                            <div class="result-divider"></div>
+                            <div class="result-bar-col">
+                                <div class="result-bar-header">
+                                    <span>Phân bố lựa chọn</span>
+                                    <span class="badge-now">Vừa loại: <b id="rbNow">0</b></span>
+                                </div>
+                                <div class="cw-summary">
+                                    <span class="cw-item cw-correct">✔ Đúng <b id="sumCorrect">0</b></span>
+                                    <span class="cw-item cw-wrong">✘ Sai <b id="sumWrong">0</b></span>
+                                </div>
+                                <div class="choice-dist" id="choiceDist"></div>
+                            </div>
+                        </div>
+                        <div class="result-divider-h"></div>
+                        <div class="elim-history">
+                            <div class="result-bar-header"><span>Số bị loại qua từng câu</span></div>
+                            <div class="elim-chart" id="elimChart"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -515,23 +1287,38 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
     <script src="firebase-config.js"></script>
     <script src="clusters-data.js"></script>
-    <script src="questions-data.js"></script>
+    <script src="units-data.js"></script>
     <script>
         'use strict';
 
         const el = id => document.getElementById(id);
-        const TOTAL = 130;
+        const TOTAL = 200;
+
+        /* ============ THEME ============ */
+        (function initTheme() {
+            const saved = localStorage.getItem('rcv_theme');
+            if (saved === 'light') {
+                document.documentElement.classList.add('light-mode');
+                el('themeToggle') && (el('themeToggle').textContent = '☀️');
+            }
+        })();
+        function toggleTheme() {
+            const root = document.documentElement;
+            const isLight = root.classList.toggle('light-mode');
+            el('themeToggle').textContent = isLight ? '☀️' : '🌙';
+            localStorage.setItem('rcv_theme', isLight ? 'light' : 'dark');
+        }
 
         /* ============ LAYOUT STATE ============ */
-        let gridCols = 13;
+        let gridCols = 20;
         let editMode = false;
 
-        // seatLayout[displayPosition] = seatNumber (1–130)
+        // seatLayout[displayPosition] = seatNumber (1–200)
         let seatLayout = loadLayout();
 
         function loadLayout() {
             try {
-                const s = localStorage.getItem('rcv_layout');
+                const s = localStorage.getItem('rcv_layout_200');
                 if (s) {
                     const a = JSON.parse(s);
                     if (Array.isArray(a) && a.length === TOTAL) return a;
@@ -539,13 +1326,16 @@
             } catch (e) { /* ignore */ }
             return Array.from({ length: TOTAL }, (_, i) => i + 1);
         }
-        function saveLayout() { localStorage.setItem('rcv_layout', JSON.stringify(seatLayout)); }
+        function saveLayout() { localStorage.setItem('rcv_layout_200', JSON.stringify(seatLayout)); }
 
         function setLayout(cols) {
             gridCols = cols;
             el('seatGrid').style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-            el('btn13x10').classList.toggle('active', cols === 13);
-            el('btn10x13').classList.toggle('active', cols === 10);
+            ['btn20x10', 'btn25x8', 'btn10x20'].forEach(id => {
+                const b = el(id); if (b) b.classList.remove('active');
+            });
+            const map = { 20: 'btn20x10', 25: 'btn25x8', 10: 'btn10x20' };
+            if (map[cols] && el(map[cols])) el(map[cols]).classList.add('active');
             renderGrid();
         }
 
@@ -568,12 +1358,19 @@
         }
 
         function resetLayout() {
-            if (!confirm('Đặt lại thứ tự ghế về mặc định (1–130)?')) return;
+            if (!confirm('Dặt lại thứ tự ghế về mặc định (1–200)?')) return;
             seatLayout = Array.from({ length: TOTAL }, (_, i) => i + 1);
             saveLayout();
             renderGrid();
         }
-
+        // Tra cứu Cụm từ tên tổ dân phố
+        const unitToCluster = {};
+        (window.UNITS_FLAT || []).forEach(u => { unitToCluster[u.label] = u.cluster; });
+        function getClusterLabel(unitName) {
+            if (!unitName) return '';
+            const c = unitToCluster[unitName.trim()];
+            return c ? ('Cụm ' + c) : '';
+        }
         /* ============ FIREBASE ============ */
         let teamsCache = {};
         let gameCache = null;
@@ -594,13 +1391,32 @@
 
         function updateStats() {
             const all = Object.values(teamsCache);
-            const joined  = all.filter(t => t.status && t.status !== 'not_joined').length;
-            const alive   = all.filter(t => t.status === 'alive' || t.status === 'winner').length;
-            const dead    = all.filter(t => t.status === 'eliminated').length;
+            const joined = all.filter(t => t.status && t.status !== 'not_joined').length;
+            const alive = all.filter(t => t.status === 'alive' || t.status === 'winner').length;
+            const dead = all.filter(t => t.status === 'eliminated').length;
             el('statJoined').textContent = joined;
-            el('statAlive').textContent  = alive;
-            el('statDead').textContent   = dead;
-            el('lobbyCount').textContent = `${joined} / 130 thí sinh đã đăng nhập`;
+            el('statAlive').textContent = alive;
+            el('statDead').textContent = dead;
+            el('lobbyCount').textContent = `${joined} / 200 thí sinh đã đăng nhập`;
+            updateDonut();
+
+        }
+        function updateDonut() {
+            const all = Object.values(teamsCache);
+            const alive = all.filter(t => t.status === 'alive' || t.status === 'winner').length;
+            const dead = all.filter(t => t.status === 'eliminated').length;
+            const total = alive + dead;
+
+            el('overallDonut').classList.toggle('no-data', total === 0);
+
+            if (total === 0) {
+                el('donutPct').textContent = '—';
+                return;
+            }
+            const pct = Math.round((alive / total) * 100);
+            const deg = (alive / total) * 360;
+            el('overallDonut').style.setProperty('--donut-deg', deg + 'deg');
+            el('donutPct').textContent = pct + '%';
         }
 
         /* ============ RENDER PHASE ============ */
@@ -631,12 +1447,26 @@
             renderGrid();
         }
 
+        /* Hiện A/B/C/D và ẩn ô nào không có nội dung (câu Đúng/Sai, 2-3 phương án) */
+        function renderOptions(q) {
+            ['A', 'B', 'C', 'D'].forEach(k => {
+                const box = el('opt' + k);
+                const text = q.options[k] && q.options[k].trim();
+                if (text) {
+                    box.textContent = k + '.  ' + text;
+                    box.style.display = '';
+                } else {
+                    box.style.display = 'none';
+                }
+            });
+        }
+
         /* QUESTION / READ_QUESTION */
         function renderQuestion(g) {
             const phaseKey = g.phase + ':' + g.currentQuestionIndex;
             const isNew = phaseKey !== lastQPhaseKey;
 
-            const q = QUESTIONS[g.currentQuestionIndex];
+            const q = g.currentQuestion;
             if (!q) return;
 
             if (isNew) {
@@ -644,11 +1474,8 @@
                 clearInterval(countdownTimer); countdownTimer = null;
 
                 el('qText').textContent = q.text;
-                el('optA').textContent = 'A.  ' + q.options.A;
-                el('optB').textContent = 'B.  ' + q.options.B;
-                el('optC').textContent = 'C.  ' + q.options.C;
-                el('optD').textContent = 'D.  ' + q.options.D;
-                ['A','B','C','D'].forEach(k => el('opt'+k).classList.remove('reveal-correct'));
+                renderOptions(q);
+                ['A', 'B', 'C', 'D'].forEach(k => el('opt' + k).classList.remove('reveal-correct'));
                 el('resultBar').classList.add('d-none');
             }
 
@@ -686,33 +1513,98 @@
             clearInterval(countdownTimer); countdownTimer = null;
             lastQPhaseKey = null;
 
-            const q = QUESTIONS[g.currentQuestionIndex];
+            const q = g.currentQuestion;
+            const correct = g.currentCorrectAnswer;
             if (q) {
                 el('qText').textContent = q.text;
-                el('optA').textContent = 'A.  ' + q.options.A;
-                el('optB').textContent = 'B.  ' + q.options.B;
-                el('optC').textContent = 'C.  ' + q.options.C;
-                el('optD').textContent = 'D.  ' + q.options.D;
-                ['A','B','C','D'].forEach(k => el('opt'+k).classList.remove('reveal-correct'));
-                el('opt' + q.correct).classList.add('reveal-correct');
+                renderOptions(q);
+                ['A', 'B', 'C', 'D'].forEach(k => {
+                    const box = el('opt' + k);
+                    box.classList.remove('reveal-correct', 'dim-wrong');
+                    if (k === correct) box.classList.add('reveal-correct');
+                    else if (correct) box.classList.add('dim-wrong');
+                });
                 el('bigTimer').textContent = '';
                 el('bigTimer').style.fontSize = '72px';
                 el('bigTimer').classList.remove('urgent');
             }
 
             const teams = Object.values(teamsCache);
-            const alive     = teams.filter(t => t.status === 'alive' || t.status === 'winner');
-            const dead      = teams.filter(t => t.status === 'eliminated');
-            const newDead   = teams.filter(t => t.status === 'eliminated' && t.eliminatedAtQuestion === g.currentQuestionIndex + 1);
+            const alive = teams.filter(t => t.status === 'alive' || t.status === 'winner');
+            const dead = teams.filter(t => t.status === 'eliminated');
+            const newDead = teams.filter(t => t.status === 'eliminated' && t.eliminatedAtQuestion === g.currentQuestionIndex + 1);
             el('rbAlive').textContent = alive.length;
-            el('rbDead').textContent  = dead.length;
-            el('rbNow').textContent   = newDead.length;
+            el('rbDead').textContent = dead.length;
+            el('rbNow').textContent = newDead.length;
 
             el('answeredLine').classList.add('d-none');
             el('resultBar').classList.remove('d-none');
             setPhaseChip('Kết quả', 'chip-result');
             showMain('questionView');
+
             renderGrid(g.currentQuestionIndex, 'result');
+            renderChoiceDist(g);
+            renderElimHistory(g);
+
+        }
+        function renderChoiceDist(g) {
+            const q = g.currentQuestion;
+            const correct = g.currentCorrectAnswer;
+            const qIdx = g.currentQuestionIndex;
+            const teams = Object.values(teamsCache);
+            const answeredTeams = teams.filter(t => t.answers && t.answers[qIdx]);
+            const total = answeredTeams.length;
+
+            const counts = { A: 0, B: 0, C: 0, D: 0 };
+            answeredTeams.forEach(t => {
+                const c = t.answers[qIdx].choice;
+                if (counts[c] !== undefined) counts[c]++;
+            });
+
+            const colors = { A: 'var(--red)', B: 'var(--blue)', C: 'var(--green)', D: '#d97706' };
+            const wrap = el('choiceDist');
+            if (!wrap || !q)
+                return;
+            const numCorrect = correct ? (counts[correct] || 0) : 0;
+            const numWrong = total - numCorrect;
+            el('sumCorrect').textContent = numCorrect;
+            el('sumWrong').textContent = numWrong;
+
+            wrap.innerHTML = ['A', 'B', 'C', 'D']
+                .filter(k => q.options[k] && q.options[k].trim())
+                .map(k => {
+                    const n = counts[k];
+                    const pct = total ? Math.round(n / total * 100) : 0;
+                    const isCorrect = k === correct;
+                    return `<div class="bar-row">
+                <span class="bar-tag ${isCorrect ? 'tag-correct' : ''}">${k}${isCorrect ? ' ✓' : ''}</span>
+                <div class="track"><div class="fill" style="width:${pct}%;background:${colors[k]}"></div></div>
+                <span class="bar-val">${n}</span>
+            </div>`;
+                }).join('');
+        }
+
+        function renderElimHistory(g) {
+            const qIdx = g.currentQuestionIndex; // 0-based
+            const teams = Object.values(teamsCache);
+            const counts = [];
+            for (let q = 1; q <= qIdx + 1; q++) {
+                counts.push(teams.filter(t => t.eliminatedAtQuestion === q).length);
+            }
+            const max = Math.max(1, ...counts);
+            const wrap = el('elimChart');
+            if (!wrap) return;
+
+            wrap.innerHTML = counts.map((n, i) => {
+                const qNum = i + 1;
+                const h = n ? Math.round((n / max) * 70) + 8 : 4;
+                const isCurrent = qNum === qIdx + 1;
+                return `<div class="elim-bar-col">
+            <div class="elim-bar-count">${n || ''}</div>
+            <div class="elim-bar ${isCurrent ? 'current' : ''}" style="height:${h}px"></div>
+            <div class="elim-bar-label">C${qNum}</div>
+        </div>`;
+            }).join('');
         }
 
         /* FINISHED */
@@ -739,8 +1631,8 @@
                 const padded = String(seatNum).padStart(3, '0');
                 const code = 'xh' + padded;
                 const t = byCode[code] || null;
-                const name   = t ? (t.displayName || '') : '';
-                const unit   = t ? (t.unit || '') : '';
+                const name = t ? (t.displayName || '') : '';
+                const unit = t ? getClusterLabel(t.unit) : '';
                 const status = t ? (t.status || 'not_joined') : 'not_joined';
 
                 let extraClass = '';
@@ -770,7 +1662,7 @@
         }
 
         function escHtml(str) {
-            return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
         /* ============ DRAG & DROP ============ */
@@ -808,7 +1700,7 @@
         }
 
         /* ============ INIT ============ */
-        setLayout(13);
+        setLayout(20);
     </script>
 </body>
 
