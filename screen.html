@@ -1475,7 +1475,8 @@
 
                 el('qText').textContent = q.text;
                 renderOptions(q);
-                ['A', 'B', 'C', 'D'].forEach(k => el('opt' + k).classList.remove('reveal-correct'));
+                                ['A', 'B', 'C', 'D'].forEach(k => el('opt' + k).classList.remove('reveal-correct', 'dim-wrong'));
+
                 el('resultBar').classList.add('d-none');
             }
 
