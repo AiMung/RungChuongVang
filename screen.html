@@ -305,17 +305,38 @@
             font-family: var(--font-d);
             font-size: 32px;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--gold), var(--blue));
+            letter-spacing: 0.03em;
+            position: relative;
+            /* Đổi màu từ nền vàng đậm -> vàng sáng bạch kim (thay cho màu trắng) -> vàng đậm */
+            background: linear-gradient(90deg,
+                    var(--gold-text) 35%,
+                    var(--gold) 45%,
+                    #FFF2A1 50%,
+                    /* Vàng bạch kim cực sáng tạo hiệu ứng tia sét/lóe sáng */
+                    var(--gold) 55%,
+                    var(--gold-text) 65%);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+
+            /* Thêm drop-shadow màu vàng đồng để chữ có chiều sâu và rực rỡ hơn */
+            filter: drop-shadow(0 2px 4px rgba(180, 83, 9, 0.4));
+
+            animation: sweepLight 6s linear infinite;
         }
 
-        .lobby-sub {
-            font-size: 16px;
-            color: var(--muted);
-            margin-top: 4px;
+        @keyframes sweepLight {
+            0% {
+                background-position: -100%;
+            }
+
+            100% {
+                background-position: 200%;
+            }
         }
+
+
 
         /* ==================== QUESTION PANEL ==================== */
         .q-panel {
@@ -1158,6 +1179,133 @@
         .cw-item {
             font-family: var(--font) !important;
         }
+
+        /* ==================== QR JOIN BUTTON ==================== */
+        .ctrl-btn.qr-btn {
+            background: var(--blue-soft);
+            border-color: rgba(37, 99, 235, 0.4);
+            color: var(--blue-dark);
+        }
+
+        .ctrl-btn.qr-btn:hover {
+            border-color: var(--blue);
+            color: var(--blue-dark);
+        }
+
+        /* ==================== QR MODAL ==================== */
+        .qr-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 8, 15, 0.55);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 20px;
+            animation: qrFadeIn 0.2s ease both;
+        }
+
+        @keyframes qrFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .qr-modal-box {
+            background: #ffffff;
+            border-radius: 26px;
+            padding: 32px 30px 26px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+            position: relative;
+            animation: qrPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes qrPopIn {
+            from {
+                opacity: 0;
+                transform: scale(0.92) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .qr-modal-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(15, 23, 42, 0.08);
+            color: #0f172a;
+            font-size: 16px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .qr-modal-close:hover {
+            background: rgba(15, 23, 42, 0.16);
+        }
+
+        .qr-modal-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .qr-modal-sub {
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+
+        .qr-modal-img {
+            width: 240px;
+            height: 240px;
+            max-width: 100%;
+            object-fit: contain;
+            border: 1px solid rgba(15, 23, 42, 0.1);
+            border-radius: 16px;
+            padding: 10px;
+            background: #fff;
+        }
+
+        .qr-modal-footer {
+            margin-top: 18px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .qr-modal-btn-close {
+            margin-top: 16px;
+            width: 100%;
+            padding: 12px 0;
+            border-radius: 12px;
+            border: 1px solid rgba(15, 23, 42, 0.12);
+            background: #f1f5f9;
+            color: #0f172a;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .qr-modal-btn-close:hover {
+            background: #e2e8f0;
+        }
     </style>
 </head>
 
@@ -1202,6 +1350,7 @@
             <button class="ctrl-btn" id="editBtn" onclick="toggleEditMode()">✏️ Sắp xếp</button>
             <button class="ctrl-btn danger d-none" id="resetBtn" onclick="resetLayout()">&#8635; Đặt lại</button>
             <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Chuyển sáng/tối">🌙</button>
+            <button class="ctrl-btn qr-btn" id="qrBtn" onclick="openQRModal()">📱 QR tham gia</button>
         </div>
     </div>
 
@@ -1284,7 +1433,18 @@
         </div>
 
     </div><!-- /screen-main -->
-
+    <!-- ============ QR JOIN MODAL ============ -->
+    <div id="qrModal" class="qr-modal-overlay d-none">
+        <div class="qr-modal-box">
+            <button class="qr-modal-close" onclick="closeQRModal()">✕</button>
+            <div class="qr-modal-title">📱 Quét mã QR để tham gia</div>
+            <div class="qr-modal-sub">Dùng camera điện thoại quét mã bên dưới để vào phòng thi</div>
+            <img src="image/qr-join.png" alt="Mã QR tham gia phòng thi" class="qr-modal-img"
+                onerror="this.alt='Chưa có ảnh image/qr-join.png'">
+            <div class="qr-modal-footer">Sau khi quét, nhập đúng số ghế của bạn để vào phòng</div>
+            <button class="qr-modal-btn-close" onclick="closeQRModal()">Đóng</button>
+        </div>
+    </div>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
     <script src="firebase-config.js"></script>
@@ -1310,6 +1470,18 @@
             el('themeToggle').textContent = isLight ? '☀️' : '🌙';
             localStorage.setItem('rcv_theme', isLight ? 'light' : 'dark');
         }
+        function openQRModal() {
+            document.getElementById('qrModal').classList.remove('d-none');
+        }
+        function closeQRModal() {
+            document.getElementById('qrModal').classList.add('d-none');
+        }
+        document.getElementById('qrModal').addEventListener('click', e => {
+            if (e.target.id === 'qrModal') closeQRModal();
+        });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && !document.getElementById('qrModal').classList.contains('d-none')) closeQRModal();
+        });
 
         /* ============ LAYOUT STATE ============ */
         let gridCols = 20;
