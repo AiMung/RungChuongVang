@@ -517,17 +517,20 @@
             border-radius: 16px;
             animation: popIn 0.45s ease;
         }
+
         .main-event-header img {
             height: 38px;
             width: 38px;
             object-fit: contain;
             border-radius: 7px;
-            filter: drop-shadow(0 1px 5px rgba(255,215,0,0.4));
+            filter: drop-shadow(0 1px 5px rgba(255, 215, 0, 0.4));
             flex-shrink: 0;
         }
+
         .main-event-title {
             line-height: 1.25;
         }
+
         .main-event-title .ev-name {
             font-family: var(--font-display);
             font-size: 15px;
@@ -538,6 +541,7 @@
             background-clip: text;
             letter-spacing: 0.5px;
         }
+
         .main-event-title .ev-sub {
             font-size: 10.5px;
             color: var(--muted);
@@ -555,11 +559,12 @@
             position: relative;
             overflow: hidden;
         }
+
         .player-badge::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse 60% 50% at 50% -10%, rgba(255,215,0,0.08) 0%, transparent 70%);
+            background: radial-gradient(ellipse 60% 50% at 50% -10%, rgba(255, 215, 0, 0.08) 0%, transparent 70%);
             pointer-events: none;
         }
 
@@ -792,20 +797,118 @@
             margin-bottom: 12px;
         }
 
-        /* ==================== LOGOUT LINK ==================== */
+        /* ==================== LOGOUT BUTTON ==================== */
         .logout-link {
-            display: block;
-            text-align: center;
-            margin-top: 14px;
-            font-size: 11px;
-            color: rgba(148, 163, 184, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 16px;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            border-radius: 10px;
             cursor: pointer;
-            text-decoration: underline;
-            text-underline-offset: 3px;
+            text-decoration: none;
+            transition: background 0.2s ease;
         }
 
         .logout-link:hover {
-            color: var(--muted);
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* ==================== LOGOUT CONFIRM MODAL ==================== */
+        .logout-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 20px;
+            animation: fadeIn 0.2s ease both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .logout-modal-box {
+            background: #fffaf0;
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            border-radius: 22px;
+            padding: 28px 24px;
+            max-width: 340px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+            animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .logout-modal-icon {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .logout-modal-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1a1200;
+            margin-bottom: 10px;
+        }
+
+        .logout-modal-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #6b5500;
+            margin-bottom: 20px;
+        }
+
+        .logout-modal-text strong {
+            color: #b91c1c;
+        }
+
+        .logout-modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .logout-modal-btn {
+            flex: 1;
+            padding: 12px 0;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            transition: filter 0.2s ease;
+        }
+
+        .logout-modal-btn.cancel {
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .logout-modal-btn.confirm {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .logout-modal-btn:hover {
+            filter: brightness(1.1);
         }
     </style>
 </head>
@@ -838,7 +941,7 @@
                     <div class="input-wrap">
                         <span class="input-prefix">XH</span>
                         <input id="codeInput" class="field-input code-input" type="tel" inputmode="numeric"
-                            maxlength="3" placeholder="031" autocomplete="off" aria-label="Nhập số ghế 001-200" />
+                            maxlength="3" placeholder="031" autocomplete="off" aria-label="Nhập số ghế 001-225" />
                     </div>
                     <div id="lookupMsg" class="lookup-msg"></div>
                 </div>
@@ -960,9 +1063,24 @@
                 <p class="status-text" id="finishedText"></p>
             </div>
 
-            <span class="logout-link" onclick="forceClearAndReload()">Đổi thông tin / đăng xuất</span>
+            <span class="logout-link" onclick="openLogoutModal()">🚪 Đổi thông tin / đăng xuất</span>
         </div>
 
+    </div>
+    <!-- ============ LOGOUT CONFIRM MODAL ============ -->
+    <div id="logoutModal" class="logout-modal-overlay d-none">
+        <div class="logout-modal-box">
+            <div class="logout-modal-icon">🚪</div>
+            <div class="logout-modal-title">Đăng xuất / đổi thông tin?</div>
+            <p class="logout-modal-text">
+                Nếu đang trong lúc trả lời câu hỏi mà đăng xuất, bạn sẽ không kịp trả lời và
+                <strong>bị tính là loại</strong>.
+            </p>
+            <div class="logout-modal-actions">
+                <button class="logout-modal-btn cancel" onclick="closeLogoutModal()">Ở lại</button>
+                <button class="logout-modal-btn confirm" onclick="forceClearAndReload()">Đăng xuất</button>
+            </div>
+        </div>
     </div>
 
     <script src="clusters-data.js"></script>
@@ -1138,7 +1256,7 @@
             const num = parseInt(raw, 10);
             clearTimeout(lookupDebounce);
 
-            if (raw.length > 0 && !isNaN(num) && num >= 1 && num <= 130) {
+            if (raw.length > 0 && !isNaN(num) && num >= 1 && num <= 225) {
                 const padded = String(num).padStart(3, '0');
                 $('previewNum').textContent = num;
                 $('previewCode').textContent = 'XH' + padded;
@@ -1186,8 +1304,8 @@
         function attemptJoin() {
             const raw = $('codeInput').value.trim();
             const num = parseInt(raw, 10);
-            if (!raw || isNaN(num) || num < 1 || num > 200) {
-                $('loginError').textContent = 'Vui lòng nhập số ghế hợp lệ từ 1 đến 200.';
+            if (!raw || isNaN(num) || num < 1 || num > 225) {
+                $('loginError').textContent = 'Vui lòng nhập số ghế hợp lệ từ 1 đến 225.';
                 return;
             }
             const padded = String(num).padStart(3, '0');
@@ -1417,6 +1535,20 @@
                 ts: firebase.database.ServerValue.TIMESTAMP
             });
         }
+        function openLogoutModal() {
+            show($('logoutModal'));
+        }
+        function closeLogoutModal() {
+            hide($('logoutModal'));
+        }
+        // Cho phép bấm ra ngoài overlay để đóng
+        $('logoutModal').addEventListener('click', e => {
+            if (e.target.id === 'logoutModal') closeLogoutModal();
+        });
+        // Cho phép nhấn ESC để đóng
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && !$('logoutModal').classList.contains('d-none')) closeLogoutModal();
+        });
     </script>
 </body>
 

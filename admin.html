@@ -441,7 +441,7 @@
                     <p class="muted" id="statusLine" style="margin:4px 0 0;">Đang kết nối Firebase...</p>
                 </div>
                 <div class="row" style="flex-wrap:wrap; gap:8px;">
-                    <button class="btn btn-outline" onclick="initTeams()">⚙ Khởi tạo 200 ghế</button>
+                    <button class="btn btn-outline" onclick="initTeams()">⚙ Khởi tạo 225 ghế</button>
                     <button class="btn btn-outline" style="border-color: #3b82f6; color: #3b82f6;"
                         onclick="initQuestions()">📤 Khởi tạo câu hỏi</button>
                     <button class="btn btn-outline" onclick="exportExcel()">⬇ Xuất Excel</button>
@@ -482,7 +482,7 @@
         <div class="card">
             <div class="row" style="justify-content:space-between; flex-wrap:wrap; gap:8px;">
                 <div>
-                    <h3 style="margin:0;">Trạng thái 200 ghế</h3>
+                    <h3 style="margin:0;">Trạng thái 225 ghế</h3>
                     <p class="muted" style="margin:3px 0 0; font-size:12px;">Màu sắc theo đơn vị/chi đoàn — tránh để
                         cùng màu ngồi gần nhau</p>
                 </div>
@@ -758,10 +758,10 @@
                     }
                 });
                 if (added === 0) {
-                    el('statusLine').textContent = '200 ghế đã đầy đủ trong Firebase. Có thể cho thí sinh đăng nhập.';;
+                    el('statusLine').textContent = '225 ghế đã đầy đủ trong Firebase. Có thể cho thí sinh đăng nhập.';;
                 } else {
                     db.ref().update(updates).then(() => {
-                        el('statusLine').textContent = `Đã bổ sung ${added} ghế còn thiếu. Tổng 200 ghế sẵn sàng.`;
+                        el('statusLine').textContent = `Đã bổ sung ${added} ghế còn thiếu. Tổng 225 ghế sẵn sàng.`;
                     }).catch(err => { el('statusLine').textContent = 'Lỗi Firebase: ' + err.message; });
                 }
             }).catch(err => { el('statusLine').textContent = 'Lỗi kết nối: ' + err.message; });
@@ -781,7 +781,7 @@
             Object.keys(latestTeams).forEach(code => { byCode[code] = latestTeams[code]; });
 
             const items = [];
-            for (let i = 1; i <= 200; i++) {
+            for (let i = 1; i <= 225; i++) {
                 const padded = String(i).padStart(3, '0');
                 const code = 'xh' + padded;
                 const t = byCode[code] || null;
@@ -868,7 +868,7 @@
 
             // Build seat→unit map
             const seatUnit = {};
-            for (let i = 1; i <= 200; i++) {
+            for (let i = 1; i <= 225; i++) {
                 const code = 'xh' + String(i).padStart(3, '0');
                 const t = byCode[code];
                 if (t && t.unit && t.status === 'alive') {
@@ -880,7 +880,7 @@
             const WINDOW = 10; // check windows of 10 consecutive seats
             const THRESHOLD = 3; // flag if 3+ same unit in window
 
-            for (let start = 1; start <= 200 - WINDOW + 1; start++) {
+            for (let start = 1; start <= 225 - WINDOW + 1; start++) {
                 const unitFreq = {};
                 for (let i = start; i < start + WINDOW; i++) {
                     const u = seatUnit[i];
@@ -1040,7 +1040,7 @@
             const ok = confirm(
                 '⚠️ Reset sẽ xoá TOÀN BỘ dữ liệu:\n' +
                 '- Trạng thái ván chơi\n' +
-                '- Toàn bộ 200 ghế (tên, đơn vị, đáp án...)\n\n' +
+                '- Toàn bộ 225 ghế (tên, đơn vị, đáp án...)\n\n' +
                 'Chỉ dùng khi test xong. Tiếp tục?'
             );
             if (!ok) return;
@@ -1049,14 +1049,14 @@
             db.ref('game').set({ phase: 'lobby', currentQuestionIndex: -1, timeLimit: 10 })
                 .then(() => db.ref('teams').remove())
                 .then(() => {
-                    el('statusLine').textContent = 'Reset xong. Bấm "Khởi tạo 200 ghế" để tạo lại trước khi thi.';
+                    el('statusLine').textContent = 'Reset xong. Bấm "Khởi tạo 225 ghế" để tạo lại trước khi thi.';
                 })
                 .catch(err => { el('statusLine').textContent = 'Lỗi reset: ' + err.message; });
         }
 
         function exportExcel() {
             const rows = [];
-            for (let i = 1; i <= 200; i++) {
+            for (let i = 1; i <= 225; i++) {
                 const code = 'xh' + String(i).padStart(3, '0');
                 const t = latestTeams[code];
                 rows.push({

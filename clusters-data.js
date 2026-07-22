@@ -5,7 +5,7 @@
  * Không chia theo cụm. Thí sinh ngồi vị trí bất kỳ, nhập mã ghế để đăng nhập.
  */
 
-const TOTAL_SEATS = 200;
+const TOTAL_SEATS = 225;
 
 /**
  * parseCode(rawInput)

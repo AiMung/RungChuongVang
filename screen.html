@@ -1197,6 +1197,8 @@
             <button class="ctrl-btn active" id="btn20x10" onclick="setLayout(20)">20 × 10</button>
             <button class="ctrl-btn" id="btn25x8" onclick="setLayout(25)">25 × 8</button>
             <button class="ctrl-btn" id="btn10x20" onclick="setLayout(10)">10 × 20</button>
+            <button class="ctrl-btn" id="btn15x15" onclick="setLayout(15)">15 × 15</button>
+
             <button class="ctrl-btn" id="editBtn" onclick="toggleEditMode()">✏️ Sắp xếp</button>
             <button class="ctrl-btn danger d-none" id="resetBtn" onclick="resetLayout()">&#8635; Đặt lại</button>
             <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Chuyển sáng/tối">🌙</button>
@@ -1292,7 +1294,7 @@
         'use strict';
 
         const el = id => document.getElementById(id);
-        const TOTAL = 200;
+        const TOTAL = 225;
 
         /* ============ THEME ============ */
         (function initTheme() {
@@ -1318,7 +1320,7 @@
 
         function loadLayout() {
             try {
-                const s = localStorage.getItem('rcv_layout_200');
+                const s = localStorage.getItem('rcv_layout_225');
                 if (s) {
                     const a = JSON.parse(s);
                     if (Array.isArray(a) && a.length === TOTAL) return a;
@@ -1326,15 +1328,15 @@
             } catch (e) { /* ignore */ }
             return Array.from({ length: TOTAL }, (_, i) => i + 1);
         }
-        function saveLayout() { localStorage.setItem('rcv_layout_200', JSON.stringify(seatLayout)); }
+        function saveLayout() { localStorage.setItem('rcv_layout_225', JSON.stringify(seatLayout)); }
 
         function setLayout(cols) {
             gridCols = cols;
             el('seatGrid').style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-            ['btn20x10', 'btn25x8', 'btn10x20'].forEach(id => {
+            ['btn20x10', 'btn25x8', 'btn10x20', 'btn15x15'].forEach(id => {
                 const b = el(id); if (b) b.classList.remove('active');
             });
-            const map = { 20: 'btn20x10', 25: 'btn25x8', 10: 'btn10x20' };
+            const map = { 20: 'btn20x10', 25: 'btn25x8', 10: 'btn10x20', 15: 'btn15x15' };
             if (map[cols] && el(map[cols])) el(map[cols]).classList.add('active');
             renderGrid();
         }
@@ -1475,8 +1477,7 @@
 
                 el('qText').textContent = q.text;
                 renderOptions(q);
-                                ['A', 'B', 'C', 'D'].forEach(k => el('opt' + k).classList.remove('reveal-correct', 'dim-wrong'));
-
+                ['A', 'B', 'C', 'D'].forEach(k => el('opt' + k).classList.remove('reveal-correct', 'dim-wrong'));
                 el('resultBar').classList.add('d-none');
             }
 
