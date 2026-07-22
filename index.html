@@ -754,7 +754,7 @@
         <!-- ============ STATS STRIP ============ -->
         <div class="stats-strip">
             <div class="stat-card">
-                <div class="stat-num" id="statSeats">225</div>
+                <div class="stat-num" id="statSeats">228</div>
                 <div class="stat-label">Ghế thi đấu</div>
             </div>
             <div class="stat-card">
@@ -846,8 +846,8 @@
                     <div class="join-num">1</div>
                     <div class="join-title">Xem thẻ ghế ngồi</div>
                     <div class="join-text">Thí sinh ngồi đúng vị trí ghế ban tổ chức đã bố trí trong hội trường (từ số 1
-                        đến 225). Số ghế chính là số báo danh.</div>
-                    <div class="seat-chip">Ghế: XH001 - XH225</div>
+                        đến 228). Số ghế chính là số báo danh.</div>
+                    <div class="seat-chip">Ghế: XH001 - XH228</div>
                 </div>
                 <div class="join-card">
                     <div class="join-num">2</div>
@@ -917,7 +917,7 @@
                     db.ref('teams').on('value', snap => {
                         const val = snap.val() || {};
                         const joined = Object.values(val).filter(t => t && t.status && t.status !== 'not_joined').length;
-                        const total = window.TOTAL_SEATS || 225;
+                        const total = window.TOTAL_SEATS || 228;
                         badge.textContent = joined + '/' + total + ' thí sinh đã đăng nhập';
                     }, () => {
                         badge.textContent = 'Hệ thống đang mở đăng ký';

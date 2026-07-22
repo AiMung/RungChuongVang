@@ -941,7 +941,7 @@
                     <div class="input-wrap">
                         <span class="input-prefix">XH</span>
                         <input id="codeInput" class="field-input code-input" type="tel" inputmode="numeric"
-                            maxlength="3" placeholder="031" autocomplete="off" aria-label="Nhập số ghế 001-225" />
+                            maxlength="3" placeholder="022" autocomplete="off" aria-label="Nhập số ghế 001-228" />
                     </div>
                     <div id="lookupMsg" class="lookup-msg"></div>
                 </div>
@@ -1256,7 +1256,7 @@
             const num = parseInt(raw, 10);
             clearTimeout(lookupDebounce);
 
-            if (raw.length > 0 && !isNaN(num) && num >= 1 && num <= 225) {
+            if (raw.length > 0 && !isNaN(num) && num >= 1 && num <= 228) {
                 const padded = String(num).padStart(3, '0');
                 $('previewNum').textContent = num;
                 $('previewCode').textContent = 'XH' + padded;
@@ -1304,8 +1304,8 @@
         function attemptJoin() {
             const raw = $('codeInput').value.trim();
             const num = parseInt(raw, 10);
-            if (!raw || isNaN(num) || num < 1 || num > 225) {
-                $('loginError').textContent = 'Vui lòng nhập số ghế hợp lệ từ 1 đến 225.';
+            if (!raw || isNaN(num) || num < 1 || num > 228) {
+                $('loginError').textContent = 'Vui lòng nhập số ghế hợp lệ từ 1 đến 228.';
                 return;
             }
             const padded = String(num).padStart(3, '0');
