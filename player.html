@@ -27,48 +27,14 @@
             --red: #ef4444;
             --red-dark: #b91c1c;
             --green: #10b981;
-            --bg: #f8fafc;
-            --bg-card: rgba(255, 255, 255, 0.95);
-            --border: rgba(37, 99, 235, 0.2);
-            --border-focus: rgba(245, 158, 11, 0.8);
-            --text: #0f172a;
-            --muted: #475569;
-            --font: 'Be Vietnam Pro', sans-serif;
-            --font-display: 'Fredoka', sans-serif;
-        }
-
-        /* ==================== LIGHT MODE ==================== */
-        :root.light-mode {
             --bg: #fffdf0;
-            --bg-card: rgba(0, 0, 0, 0.04);
+            --bg-card: rgba(255, 252, 220, 0.85);
             --border: rgba(180, 140, 0, 0.35);
             --border-focus: rgba(180, 100, 0, 0.7);
             --text: #1a1200;
             --muted: #6b5500;
-        }
-
-        :root.light-mode body {
-            background-image:
-                radial-gradient(ellipse 100% 60% at 50% -10%, rgba(255, 215, 0, 0.22) 0%, transparent 65%),
-                radial-gradient(ellipse 70% 50% at 85% 85%, rgba(211, 47, 47, 0.10) 0%, transparent 55%);
-        }
-
-        :root.light-mode .field-input {
-            background: rgba(255, 255, 255, 0.8);
-            color: #1a1200;
-        }
-
-        :root.light-mode .combo-dropdown {
-            background: #fffcf0;
-        }
-
-        :root.light-mode .combo-option {
-            color: #1a1200;
-        }
-
-        :root.light-mode .glass-card {
-            background: rgba(255, 252, 220, 0.85);
-            border-color: rgba(180, 140, 0, 0.35);
+            --font: 'Be Vietnam Pro', sans-serif;
+            --font-display: 'Fredoka', sans-serif;
         }
 
         * {
@@ -84,9 +50,8 @@
             min-height: 100vh;
             background: var(--bg);
             background-image:
-                radial-gradient(ellipse 100% 60% at 50% -10%, rgba(30, 144, 255, 0.22) 0%, transparent 65%),
-                radial-gradient(ellipse 70% 50% at 85% 85%, rgba(230, 57, 70, 0.12) 0%, transparent 55%),
-                radial-gradient(ellipse 60% 40% at 15% 75%, rgba(255, 215, 0, 0.07) 0%, transparent 50%);
+                radial-gradient(ellipse 100% 60% at 50% -10%, rgba(255, 215, 0, 0.22) 0%, transparent 65%),
+                radial-gradient(ellipse 70% 50% at 85% 85%, rgba(211, 47, 47, 0.10) 0%, transparent 55%);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -143,25 +108,6 @@
             margin-bottom: 22px;
             padding-top: 8px;
             position: relative;
-        }
-
-        /* Theme toggle in header */
-        .theme-btn {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 6px 9px;
-            font-size: 16px;
-            cursor: pointer;
-            color: var(--text);
-            transition: border-color 0.2s;
-        }
-
-        .theme-btn:hover {
-            border-color: var(--gold);
         }
 
         .logo-wrap {
@@ -288,7 +234,7 @@
             padding: 13px 14px;
             border-radius: 12px;
             border: 1.5px solid rgba(255, 215, 0, 0.22);
-            background: rgba(0, 0, 0, 0.28);
+            background: rgba(255, 255, 255, 0.8);
             color: var(--text);
             font-family: var(--font);
             font-size: 15px;
@@ -359,7 +305,7 @@
             top: calc(100% + 6px);
             max-height: 264px;
             overflow-y: auto;
-            background: #0c1526;
+            background: #fffcf0;
             border: 1.5px solid var(--border-focus);
             border-radius: 14px;
             box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
@@ -923,7 +869,6 @@
         <!-- ============ LOGIN VIEW ============ -->
         <div id="loginView">
             <div class="app-header">
-                <button class="theme-btn" id="themeBtn" onclick="togglePlayerTheme()">🌙</button>
                 <div class="logo-wrap">
                     <img src="image/dtn.webp" alt="Logo Đoàn" class="logo-img" onerror="this.style.display='none'">
                 </div>
@@ -1097,23 +1042,6 @@
             const sz = Math.random() * 2.5 + 0.8;
             s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random() * 100}%;top:${Math.random() * 100}%;--dur:${2 + Math.random() * 4}s;--delay:${Math.random() * 5}s;`;
             starsLayer.appendChild(s);
-        }
-
-        // ========== THEME TOGGLE ==========
-        (function initPlayerTheme() {
-            const saved = localStorage.getItem('rcv_player_theme');
-            if (saved === 'light') {
-                document.documentElement.classList.add('light-mode');
-                const btn = document.getElementById('themeBtn');
-                if (btn) btn.textContent = '\u2600\ufe0f';
-            }
-        })();
-        function togglePlayerTheme() {
-            const root = document.documentElement;
-            const isLight = root.classList.toggle('light-mode');
-            const btn = document.getElementById('themeBtn');
-            if (btn) btn.textContent = isLight ? '\u2600\ufe0f' : '\ud83c\udf19';
-            localStorage.setItem('rcv_player_theme', isLight ? 'light' : 'dark');
         }
 
         // ========== HELPERS ==========
