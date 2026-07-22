@@ -1795,7 +1795,14 @@
             clearInterval(countdownTimer); countdownTimer = null;
             const winner = g.winnerCode ? teamsCache[g.winnerCode] : null;
             el('winName').textContent = winner ? (winner.displayName || '') : '';
-            el('winUnit').textContent = winner ? (winner.unit || '') : '';
+
+            let clusterText = '';
+            if (winner && winner.unit) {
+                const match = UNITS_FLAT.find(u => u.label.trim().toLowerCase() === winner.unit.trim().toLowerCase());
+                clusterText = match ? match.clusterLabel : winner.unit;
+            }
+            el('winUnit').textContent = clusterText;
+
             setPhaseChip('Kết thúc', 'chip-end');
             showMain('finishedView');
             renderGrid();
